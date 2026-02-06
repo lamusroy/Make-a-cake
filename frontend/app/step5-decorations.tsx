@@ -29,7 +29,7 @@ export default function Step5Decorations() {
       title="Add Decorations"
       subtitle="Make it extra special (optional)"
       onNext={handleNext}
-      nextLabel="Get Recipe!"
+      nextLabel="Next"
       canProceed={true}
     >
       <View style={styles.container}>
