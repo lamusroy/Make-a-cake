@@ -28,7 +28,7 @@ export default function Step2Layers() {
   return (
     <StepLayout
       step={2}
-      totalSteps={5}
+      totalSteps={6}
       title="How Many Layers?"
       subtitle="Build your cake height"
       onNext={handleNext}
