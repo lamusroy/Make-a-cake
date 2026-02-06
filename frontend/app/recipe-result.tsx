@@ -13,7 +13,7 @@ import {
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useCakeStore, decorationOptions } from '../src/store/cakeStore';
+import { useCakeStore, decorationOptions, moistureBoostOptions } from '../src/store/cakeStore';
 import { CakePreview } from '../src/components/CakePreview';
 import Animated, {
   useSharedValue,
@@ -26,76 +26,126 @@ import Animated, {
 
 const { width } = Dimensions.get('window');
 
+// Helper functions for fine-tuning
+const getFatTypeText = (value: number) => {
+  if (value < 33) return { name: 'Butter', amount: '1 cup softened butter', tip: 'Rich, flavorful - perfect for milky cakes' };
+  if (value > 66) return { name: 'Vegetable Oil', amount: '1 cup vegetable oil', tip: 'Extra moist - ideal for carrot cake, stays fresh longer' };
+  return { name: 'Lard', amount: '1 cup lard (room temperature)', tip: 'Balanced - rich flavor with good moisture' };
+};
+
+const getFluffinessText = (value: number) => {
+  if (value < 33) return { method: 'whole eggs', tip: 'Dense, fudgy texture' };
+  if (value > 66) return { method: 'separated eggs (whip whites to stiff peaks, fold in last)', tip: 'Light, airy angel food texture' };
+  return { method: 'eggs (beat until pale and fluffy)', tip: 'Classic cake texture' };
+};
+
+const getSweetnessAdjustment = (value: number) => {
+  if (value < 33) return 'Reduce sugar by ¼ cup for less sweetness';
+  if (value > 66) return 'Add extra ¼ cup sugar for decadent sweetness';
+  return 'Standard sugar amount';
+};
+
+const getRichnessAdjustment = (value: number) => {
+  if (value < 33) return 'Use recipe as-is';
+  if (value > 66) return 'Add 2 extra egg yolks for richer texture';
+  return 'Standard egg amount';
+};
+
+const getMoistureBoostText = (value: string) => {
+  const options: any = {
+    'none': '',
+    'sour-cream': 'Add ½ cup sour cream for tangy moisture',
+    'yogurt': 'Add ½ cup Greek yogurt for light moisture',
+    'buttermilk': 'Replace milk with buttermilk for classic tang',
+  };
+  return options[value] || '';
+};
+
+const getRiseAdjustment = (value: number) => {
+  if (value < 33) return 'Reduce baking powder by ½ tsp for denser cake';
+  if (value > 66) return 'Add extra ½ tsp baking powder for higher rise';
+  return 'Standard leavening';
+};
+
 // Recipe generator based on selections
 const generateRecipe = (cake: any) => {
+  const fatInfo = getFatTypeText(cake.fatType);
+  const fluffInfo = getFluffinessText(cake.fluffiness);
+  
   const recipes: any = {
     // Base recipes for different flavors
     'Vanilla': {
-      base: '2½ cups all-purpose flour, 2 cups sugar, 1 cup butter, 4 eggs, 1 cup milk, 2 tsp vanilla extract, 3 tsp baking powder, ½ tsp salt',
+      base: `2½ cups all-purpose flour, 2 cups sugar, ${fatInfo.amount}, 4 eggs (${fluffInfo.method}), 1 cup milk, 2 tsp vanilla extract, 3 tsp baking powder, ½ tsp salt`,
       instructions: [
         'Preheat oven to 350°F (175°C). Grease and flour cake pans.',
-        'Cream butter and sugar until light and fluffy.',
-        'Add eggs one at a time, beating well after each addition.',
+        `Cream ${fatInfo.name.toLowerCase()} and sugar until light and fluffy.`,
+        `Add eggs ${cake.fluffiness > 66 ? '(yolks first, fold in whipped whites at end)' : 'one at a time, beating well after each addition'}.`,
         'Mix in vanilla extract.',
         'Combine flour, baking powder, and salt. Add alternately with milk.',
+        cake.fluffiness > 66 ? 'Gently fold in whipped egg whites until just combined.' : '',
         'Pour into prepared pans and bake for 30-35 minutes.',
-      ],
+      ].filter(Boolean),
     },
     'Chocolate': {
-      base: '2 cups flour, 2 cups sugar, ¾ cup cocoa powder, 2 tsp baking soda, 1 tsp salt, 2 eggs, 1 cup buttermilk, 1 cup hot coffee, ½ cup vegetable oil, 2 tsp vanilla',
+      base: `2 cups flour, 2 cups sugar, ¾ cup cocoa powder, 2 tsp baking soda, 1 tsp salt, ${cake.fluffiness > 66 ? '4 eggs (separated)' : '2 eggs'}, 1 cup buttermilk, 1 cup hot coffee, ${fatInfo.amount}, 2 tsp vanilla`,
       instructions: [
         'Preheat oven to 350°F (175°C). Grease and flour cake pans.',
         'Mix all dry ingredients in a large bowl.',
-        'Add eggs, buttermilk, oil, and vanilla. Beat for 2 minutes.',
+        `Add ${cake.fluffiness > 66 ? 'egg yolks' : 'eggs'}, buttermilk, ${fatInfo.name.toLowerCase()}, and vanilla. Beat for 2 minutes.`,
         'Stir in hot coffee (batter will be thin).',
+        cake.fluffiness > 66 ? 'Whip egg whites to stiff peaks and gently fold into batter.' : '',
         'Pour into prepared pans and bake for 30-35 minutes.',
         'Cool completely before frosting.',
-      ],
+      ].filter(Boolean),
     },
     'Red Velvet': {
-      base: '2½ cups flour, 2 cups sugar, 1 cup buttermilk, 1½ cups vegetable oil, 2 eggs, 2 tbsp cocoa powder, 1 oz red food coloring, 1 tsp vanilla, 1 tsp baking soda, 1 tsp vinegar',
+      base: `2½ cups flour, 2 cups sugar, 1 cup buttermilk, ${fatInfo.amount}, ${cake.fluffiness > 66 ? '4 eggs (separated)' : '2 eggs'}, 2 tbsp cocoa powder, 1 oz red food coloring, 1 tsp vanilla, 1 tsp baking soda, 1 tsp vinegar`,
       instructions: [
         'Preheat oven to 350°F (175°C). Grease and flour cake pans.',
         'Mix flour and cocoa powder in a bowl.',
-        'Beat sugar, oil, and eggs until smooth.',
-        'Add food coloring and vanilla to egg mixture.',
+        `Beat sugar, ${fatInfo.name.toLowerCase()}, and ${cake.fluffiness > 66 ? 'egg yolks' : 'eggs'} until smooth.`,
+        'Add food coloring and vanilla to mixture.',
         'Alternate adding flour mixture and buttermilk.',
         'Mix baking soda with vinegar and fold into batter.',
+        cake.fluffiness > 66 ? 'Fold in stiffly whipped egg whites.' : '',
         'Pour into pans and bake for 25-30 minutes.',
-      ],
+      ].filter(Boolean),
     },
     'Strawberry': {
-      base: '2½ cups flour, 2 cups sugar, ¾ cup butter, 4 eggs, 1 cup strawberry puree, ½ cup milk, 3 tsp baking powder, ½ tsp salt, 1 tsp vanilla',
+      base: `2½ cups flour, 2 cups sugar, ${fatInfo.amount}, 4 eggs (${fluffInfo.method}), 1 cup strawberry puree, ½ cup milk, 3 tsp baking powder, ½ tsp salt, 1 tsp vanilla`,
       instructions: [
         'Preheat oven to 350°F (175°C). Grease and flour cake pans.',
         'Blend fresh strawberries to make puree.',
-        'Cream butter and sugar until fluffy.',
-        'Add eggs one at a time, then vanilla.',
+        `Cream ${fatInfo.name.toLowerCase()} and sugar until fluffy.`,
+        `Add eggs ${cake.fluffiness > 66 ? '(yolks first)' : 'one at a time'}, then vanilla.`,
         'Alternate adding dry ingredients with strawberry puree and milk.',
+        cake.fluffiness > 66 ? 'Fold in whipped egg whites gently.' : '',
         'Bake for 30-35 minutes until done.',
-      ],
+      ].filter(Boolean),
     },
     'Lemon': {
-      base: '3 cups flour, 2 cups sugar, 1 cup butter, 4 eggs, 1 cup milk, ¼ cup lemon juice, 2 tbsp lemon zest, 3 tsp baking powder, ½ tsp salt',
+      base: `3 cups flour, 2 cups sugar, ${fatInfo.amount}, 4 eggs (${fluffInfo.method}), 1 cup milk, ¼ cup lemon juice, 2 tbsp lemon zest, 3 tsp baking powder, ½ tsp salt`,
       instructions: [
         'Preheat oven to 350°F (175°C). Grease and flour cake pans.',
-        'Cream butter and sugar until light.',
-        'Add eggs one at a time, then lemon juice and zest.',
+        `Cream ${fatInfo.name.toLowerCase()} and sugar until light.`,
+        `Add eggs ${cake.fluffiness > 66 ? '(yolks first)' : 'one at a time'}, then lemon juice and zest.`,
         'Combine dry ingredients. Add alternately with milk.',
+        cake.fluffiness > 66 ? 'Gently fold in whipped egg whites.' : '',
         'Pour into pans and bake for 30-35 minutes.',
         'Let cool before adding frosting.',
-      ],
+      ].filter(Boolean),
     },
     'Carrot': {
-      base: '2 cups flour, 2 cups sugar, 2 cups shredded carrots, 1 cup vegetable oil, 4 eggs, 2 tsp cinnamon, 1 tsp baking soda, 1 tsp baking powder, ½ cup chopped walnuts (optional)',
+      base: `2 cups flour, 2 cups sugar, 2 cups shredded carrots, ${fatInfo.amount}, 4 eggs (${fluffInfo.method}), 2 tsp cinnamon, 1 tsp baking soda, 1 tsp baking powder, ½ cup chopped walnuts (optional)`,
       instructions: [
         'Preheat oven to 350°F (175°C). Grease and flour cake pans.',
         'Mix flour, sugar, cinnamon, baking soda, and baking powder.',
-        'Add oil and eggs, beat until combined.',
+        `Add ${fatInfo.name.toLowerCase()} and ${cake.fluffiness > 66 ? 'egg yolks' : 'eggs'}, beat until combined.`,
         'Fold in shredded carrots and walnuts if using.',
+        cake.fluffiness > 66 ? 'Fold in stiffly whipped egg whites for lighter texture.' : '',
         'Pour into pans and bake for 35-40 minutes.',
         'Cool completely before frosting.',
-      ],
+      ].filter(Boolean),
     },
   };
 
@@ -117,12 +167,27 @@ const generateRecipe = (cake: any) => {
     'Caramel': 'Use store-bought or homemade caramel sauce between layers.',
   };
 
+  // Build fine-tuning tips
+  const fineTuningTips = [
+    fatInfo.tip,
+    fluffInfo.tip,
+    getSweetnessAdjustment(cake.sweetness),
+    getRichnessAdjustment(cake.richness),
+    getMoistureBoostText(cake.moistureBoost),
+    getRiseAdjustment(cake.riseIntensity),
+  ].filter(tip => tip && tip !== 'Standard sugar amount' && tip !== 'Use recipe as-is' && tip !== 'Standard leavening' && tip !== 'Standard egg amount');
+
   return {
     base: recipes[cake.flavor || 'Vanilla'],
     frosting: frostings[cake.frosting || 'Buttercream'],
     filling: fillings[cake.filling || 'Strawberry Jam'],
     layers: cake.layers,
     decorations: cake.decorations.map((id: string) => decorationOptions.find(d => d.id === id)?.name).filter(Boolean),
+    fineTuning: {
+      fatType: fatInfo.name,
+      fluffiness: cake.fluffiness > 66 ? 'Extra Fluffy (whipped whites)' : cake.fluffiness < 33 ? 'Dense' : 'Classic',
+      tips: fineTuningTips,
+    },
   };
 };
 
