@@ -19,13 +19,13 @@ export default function Step5Decorations() {
   const toggleDecoration = useCakeStore((state) => state.toggleDecoration);
 
   const handleNext = () => {
-    router.push('/recipe-result');
+    router.push('/step6-finetune');
   };
 
   return (
     <StepLayout
       step={5}
-      totalSteps={5}
+      totalSteps={6}
       title="Add Decorations"
       subtitle="Make it extra special (optional)"
       onNext={handleNext}
