@@ -353,6 +353,36 @@ Made with Make a Cake app! 🍰
           </Animated.View>
         )}
         
+        {/* Fine-Tuning Adjustments */}
+        {recipe.fineTuning && recipe.fineTuning.tips.length > 0 && (
+          <Animated.View entering={FadeInDown.delay(850).duration(500)}>
+            <View style={[styles.recipeCard, styles.fineTuningCard]}>
+              <View style={styles.cardHeader}>
+                <Ionicons name="options" size={24} color="#9C27B0" />
+                <Text style={[styles.cardTitle, { color: '#9C27B0' }]}>Your Adjustments</Text>
+              </View>
+              <View style={styles.fineTuningBadges}>
+                <View style={styles.fineTuningBadge}>
+                  <Ionicons name="water" size={16} color="#8B5A2B" />
+                  <Text style={styles.fineTuningBadgeText}>{recipe.fineTuning.fatType}</Text>
+                </View>
+                <View style={styles.fineTuningBadge}>
+                  <Ionicons name="cloud" size={16} color="#8B5A2B" />
+                  <Text style={styles.fineTuningBadgeText}>{recipe.fineTuning.fluffiness}</Text>
+                </View>
+              </View>
+              <View style={styles.fineTuningTips}>
+                {recipe.fineTuning.tips.map((tip: string, index: number) => (
+                  <View key={index} style={styles.fineTuningTipRow}>
+                    <Ionicons name="checkmark-circle" size={16} color="#9C27B0" />
+                    <Text style={styles.fineTuningTipText}>{tip}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          </Animated.View>
+        )}
+        
         {/* Tips */}
         <Animated.View entering={FadeInDown.delay(900).duration(500)}>
           <View style={[styles.recipeCard, styles.tipsCard]}>
