@@ -9,6 +9,13 @@ export interface CakeConfig {
   filling: string | null;
   fillingColor: string | null;
   decorations: string[];
+  // Fine-tuning options
+  fatType: number; // 0 = Butter, 50 = Lard, 100 = Oil
+  fluffiness: number; // 0 = Whole eggs (dense), 100 = Whipped whites (fluffy)
+  sweetness: number; // 0 = Less sweet, 100 = Extra sweet
+  richness: number; // 0 = Standard, 100 = Extra yolks
+  moistureBoost: string; // 'none' | 'sour-cream' | 'yogurt' | 'buttermilk'
+  riseIntensity: number; // 0 = Low rise, 100 = High rise
 }
 
 interface CakeStore {
