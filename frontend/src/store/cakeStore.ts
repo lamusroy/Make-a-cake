@@ -26,6 +26,12 @@ interface CakeStore {
   setFilling: (filling: string, color: string) => void;
   setDecorations: (decorations: string[]) => void;
   toggleDecoration: (decoration: string) => void;
+  setFatType: (value: number) => void;
+  setFluffiness: (value: number) => void;
+  setSweetness: (value: number) => void;
+  setRichness: (value: number) => void;
+  setMoistureBoost: (value: string) => void;
+  setRiseIntensity: (value: number) => void;
   resetCake: () => void;
 }
 
@@ -38,6 +44,12 @@ const initialCake: CakeConfig = {
   filling: null,
   fillingColor: null,
   decorations: [],
+  fatType: 0, // Butter by default
+  fluffiness: 50, // Medium
+  sweetness: 50, // Medium
+  richness: 50, // Medium
+  moistureBoost: 'none',
+  riseIntensity: 50, // Medium
 };
 
 export const useCakeStore = create<CakeStore>((set) => ({
@@ -60,6 +72,18 @@ export const useCakeStore = create<CakeStore>((set) => ({
         : [...current, decoration];
       return { cake: { ...state.cake, decorations: newDecorations } };
     }),
+  setFatType: (fatType) =>
+    set((state) => ({ cake: { ...state.cake, fatType } })),
+  setFluffiness: (fluffiness) =>
+    set((state) => ({ cake: { ...state.cake, fluffiness } })),
+  setSweetness: (sweetness) =>
+    set((state) => ({ cake: { ...state.cake, sweetness } })),
+  setRichness: (richness) =>
+    set((state) => ({ cake: { ...state.cake, richness } })),
+  setMoistureBoost: (moistureBoost) =>
+    set((state) => ({ cake: { ...state.cake, moistureBoost } })),
+  setRiseIntensity: (riseIntensity) =>
+    set((state) => ({ cake: { ...state.cake, riseIntensity } })),
   resetCake: () => set({ cake: initialCake }),
 }));
 
