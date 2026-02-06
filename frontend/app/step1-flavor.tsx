@@ -24,7 +24,7 @@ export default function Step1Flavor() {
   return (
     <StepLayout
       step={1}
-      totalSteps={5}
+      totalSteps={6}
       title="Choose Your Flavor"
       subtitle="Pick the base flavor for your cake"
       onNext={handleNext}
