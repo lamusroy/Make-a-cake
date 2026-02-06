@@ -24,7 +24,7 @@ export default function Step3Frosting() {
   return (
     <StepLayout
       step={3}
-      totalSteps={5}
+      totalSteps={6}
       title="Pick Your Frosting"
       subtitle="The creamy coating for your cake"
       onNext={handleNext}
