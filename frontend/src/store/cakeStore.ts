@@ -125,3 +125,10 @@ export const decorationOptions = [
   { id: 'whipped-cream-dollops', name: 'Cream Dollops', icon: 'cloud' },
   { id: 'candles', name: 'Candles', icon: 'flame' },
 ];
+
+export const moistureBoostOptions = [
+  { id: 'none', name: 'None', description: 'Standard recipe' },
+  { id: 'sour-cream', name: 'Sour Cream', description: 'Tangy & tender' },
+  { id: 'yogurt', name: 'Greek Yogurt', description: 'Light & moist' },
+  { id: 'buttermilk', name: 'Buttermilk', description: 'Classic & fluffy' },
+];
