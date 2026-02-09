@@ -13,7 +13,7 @@ import {
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useCakeStore, decorationOptions, moistureBoostOptions } from '../src/store/cakeStore';
+import { useCakeStore, decorationOptions, moistureBoostOptions, mixInOptions, crustOptions } from '../src/store/cakeStore';
 import { CakePreview } from '../src/components/CakePreview';
 import Animated, {
   useSharedValue,
