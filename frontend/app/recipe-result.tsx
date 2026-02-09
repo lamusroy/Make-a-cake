@@ -125,24 +125,24 @@ const generateRecipe = (cake: any) => {
       instructions: [
         'Preheat oven to 350°F (175°C). Grease and flour cake pans.',
         'Mix flour and cocoa powder in a bowl.',
-        `Beat sugar, ${fatInfo.name.toLowerCase()}, and ${cake.fluffiness > 66 ? 'egg yolks' : 'eggs'} until smooth.`,
+        `Beat sugar, ${fatInfo.name.toLowerCase()}, and ${cake.fluffiness > 50 ? 'egg yolks' : 'eggs'} until smooth.`,
         'Add food coloring and vanilla to mixture.',
         'Alternate adding flour mixture and buttermilk.',
         'Mix baking soda with vinegar and fold into batter.',
-        cake.fluffiness > 66 ? 'Fold in stiffly whipped egg whites.' : '',
+        cake.fluffiness > 50 ? 'Fold in stiffly whipped egg whites.' : '',
         'Pour into pans and bake for 25-30 minutes.',
       ].filter(Boolean),
     },
-    'Strawberry': {
-      base: `2½ cups flour, 2 cups sugar, ${fatInfo.amount}, 4 eggs (${fluffInfo.method}), 1 cup strawberry puree, ½ cup milk, 3 tsp baking powder, ½ tsp salt, 1 tsp vanilla`,
+    'Orange': {
+      base: `2½ cups flour, 2 cups sugar, ${fatInfo.amount}, 4 eggs (${fluffInfo.method}), ¾ cup fresh orange juice, ¼ cup milk, 2 tbsp orange zest, 3 tsp baking powder, ½ tsp salt`,
       instructions: [
         'Preheat oven to 350°F (175°C). Grease and flour cake pans.',
-        'Blend fresh strawberries to make puree.',
         `Cream ${fatInfo.name.toLowerCase()} and sugar until fluffy.`,
-        `Add eggs ${cake.fluffiness > 66 ? '(yolks first)' : 'one at a time'}, then vanilla.`,
-        'Alternate adding dry ingredients with strawberry puree and milk.',
-        cake.fluffiness > 66 ? 'Fold in whipped egg whites gently.' : '',
-        'Bake for 30-35 minutes until done.',
+        `Add eggs ${cake.fluffiness > 50 ? '(yolks first)' : 'one at a time'}, then orange zest.`,
+        'Combine dry ingredients. Add alternately with orange juice and milk.',
+        cake.fluffiness > 50 ? 'Fold in whipped egg whites gently.' : '',
+        'Pour into pans and bake for 30-35 minutes.',
+        'Pairs wonderfully with Zesty Glaze!',
       ].filter(Boolean),
     },
     'Lemon': {
