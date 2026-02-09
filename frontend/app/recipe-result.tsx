@@ -101,27 +101,27 @@ const generateRecipe = (cake: any) => {
       instructions: [
         'Preheat oven to 350°F (175°C). Grease and flour cake pans.',
         `Cream ${fatInfo.name.toLowerCase()} and sugar until light and fluffy.`,
-        `Add eggs ${cake.fluffiness > 66 ? '(yolks first, fold in whipped whites at end)' : 'one at a time, beating well after each addition'}.`,
+        `Add eggs ${cake.fluffiness > 50 ? '(yolks first, fold in whipped whites at end)' : 'one at a time, beating well after each addition'}.`,
         'Mix in vanilla extract.',
         'Combine flour, baking powder, and salt. Add alternately with milk.',
-        cake.fluffiness > 66 ? 'Gently fold in whipped egg whites until just combined.' : '',
+        cake.fluffiness > 50 ? 'Gently fold in whipped egg whites until just combined.' : '',
         'Pour into prepared pans and bake for 30-35 minutes.',
       ].filter(Boolean),
     },
     'Chocolate': {
-      base: `2 cups flour, 2 cups sugar, ¾ cup cocoa powder, 2 tsp baking soda, 1 tsp salt, ${cake.fluffiness > 66 ? '4 eggs (separated)' : '2 eggs'}, 1 cup buttermilk, 1 cup hot coffee, ${fatInfo.amount}, 2 tsp vanilla`,
+      base: `2 cups flour, 2 cups sugar, ¾ cup cocoa powder, 2 tsp baking soda, 1 tsp salt, ${cake.fluffiness > 50 ? '4 eggs (separated)' : '2 eggs'}, 1 cup buttermilk, 1 cup hot coffee, ${fatInfo.amount}, 2 tsp vanilla`,
       instructions: [
         'Preheat oven to 350°F (175°C). Grease and flour cake pans.',
         'Mix all dry ingredients in a large bowl.',
-        `Add ${cake.fluffiness > 66 ? 'egg yolks' : 'eggs'}, buttermilk, ${fatInfo.name.toLowerCase()}, and vanilla. Beat for 2 minutes.`,
+        `Add ${cake.fluffiness > 50 ? 'egg yolks' : 'eggs'}, buttermilk, ${fatInfo.name.toLowerCase()}, and vanilla. Beat for 2 minutes.`,
         'Stir in hot coffee (batter will be thin).',
-        cake.fluffiness > 66 ? 'Whip egg whites to stiff peaks and gently fold into batter.' : '',
+        cake.fluffiness > 50 ? 'Whip egg whites to stiff peaks and gently fold into batter.' : '',
         'Pour into prepared pans and bake for 30-35 minutes.',
         'Cool completely before frosting.',
       ].filter(Boolean),
     },
     'Red Velvet': {
-      base: `2½ cups flour, 2 cups sugar, 1 cup buttermilk, ${fatInfo.amount}, ${cake.fluffiness > 66 ? '4 eggs (separated)' : '2 eggs'}, 2 tbsp cocoa powder, 1 oz red food coloring, 1 tsp vanilla, 1 tsp baking soda, 1 tsp vinegar`,
+      base: `2½ cups flour, 2 cups sugar, 1 cup buttermilk, ${fatInfo.amount}, ${cake.fluffiness > 50 ? '4 eggs (separated)' : '2 eggs'}, 2 tbsp cocoa powder, 1 oz red food coloring, 1 tsp vanilla, 1 tsp baking soda, 1 tsp vinegar`,
       instructions: [
         'Preheat oven to 350°F (175°C). Grease and flour cake pans.',
         'Mix flour and cocoa powder in a bowl.',
