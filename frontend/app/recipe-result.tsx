@@ -310,60 +310,64 @@ export default function RecipeResult() {
         .join('\n');
     };
 
-    // Get dessert type emoji and name
-    const getDessertInfo = () => {
-      if (cake.dessertType === 'brownie') return { emoji: '🍫', name: 'Brownie' };
-      if (cake.dessertType === 'cheesecake') return { emoji: '🧀', name: 'Cheesecake' };
-      return { emoji: '🎂', name: 'Cake' };
+    // Format instructions as a list
+    const formatInstructions = (instructions: string[]) => {
+      return instructions
+        .map(step => `• ${step}`)
+        .join('\n');
     };
-    const dessertInfo = getDessertInfo();
+
+    // Get dessert type emoji
+    const getEmoji = () => {
+      if (cake.dessertType === 'brownie') return '🍫';
+      if (cake.dessertType === 'cheesecake') return '🧀';
+      return '🎂';
+    };
 
     // Build recipe text dynamically, skipping null sections
-    let recipeText = `${dessertInfo.emoji} My ${cake.flavor} ${dessertInfo.name} Recipe ${dessertInfo.emoji}\n\n`;
-    recipeText += `📊 Size: ${recipe.sizeInfo.name} (${recipe.sizeInfo.servings} servings)\n\n`;
+    let recipeText = `${getEmoji()} ${cake.flavor} ${cake.dessertType === 'cake' ? 'Cake' : cake.dessertType === 'brownie' ? 'Brownie' : 'Cheesecake'}\n`;
+    recipeText += `${recipe.sizeInfo.name} • ${recipe.sizeInfo.servings} servings\n\n`;
     
     // Ingredients
-    recipeText += `📋 INGREDIENTS:\n${formatIngredients(recipe.base.base)}\n\n`;
+    recipeText += `INGREDIENTS\n${formatIngredients(recipe.base.base)}\n`;
     
     // Instructions
-    recipeText += `📝 INSTRUCTIONS:\n${recipe.base.instructions.map((step: string, i: number) => `${i + 1}. ${step}`).join('\n')}\n`;
+    recipeText += `\nINSTRUCTIONS\n${formatInstructions(recipe.base.instructions)}\n`;
     
     // Frosting (only if exists and not "None")
     if (recipe.frosting && cake.frosting && !cake.frosting.includes('None')) {
-      recipeText += `\n🧁 FROSTING - ${cake.frosting}:\n${recipe.frosting}\n`;
+      recipeText += `\nFROSTING — ${cake.frosting}\n${recipe.frosting}\n`;
     }
     
     // Filling (only if exists and not "None")
     if (recipe.filling && cake.filling && !cake.filling.includes('None')) {
-      recipeText += `\n🍰 FILLING - ${cake.filling}:\n${recipe.filling}\n`;
+      recipeText += `\nFILLING — ${cake.filling}\n${recipe.filling}\n`;
     }
     
     // Crust for cheesecake
     if (recipe.crust && cake.dessertType === 'cheesecake') {
-      recipeText += `\n🥧 CRUST: ${recipe.crust}\n`;
+      recipeText += `\nCRUST\n${recipe.crust}\n`;
     }
     
     // Mix-ins for brownies
     if (recipe.mixIns && recipe.mixIns.length > 0) {
-      recipeText += `\n🍫 MIX-INS:\n${recipe.mixIns.map((m: string) => `• ${m}`).join('\n')}\n`;
+      recipeText += `\nMIX-INS\n${recipe.mixIns.map((m: string) => `• ${m}`).join('\n')}\n`;
     }
     
     // Toppings (only if any selected)
     if (recipe.decorations && recipe.decorations.length > 0) {
-      recipeText += `\n✨ TOPPINGS: ${recipe.decorations.join(', ')}\n`;
+      recipeText += `\nTOPPINGS\n${recipe.decorations.map((d: string) => `• ${d}`).join('\n')}\n`;
     }
     
-    // Fine-tuning tips (only if any)
+    // Tips (only if any)
     if (recipe.fineTuning && recipe.fineTuning.tips && recipe.fineTuning.tips.length > 0) {
-      recipeText += `\n💡 TIPS:\n${recipe.fineTuning.tips.map((t: string) => `• ${t}`).join('\n')}\n`;
+      recipeText += `\nTIPS\n${recipe.fineTuning.tips.map((t: string) => `• ${t}`).join('\n')}`;
     }
-    
-    recipeText += `\nMade with Make a Cake app!`;
     
     try {
       await Share.share({
-        message: recipeText,
-        title: `My ${cake.flavor} ${dessertInfo.name} Recipe`,
+        message: recipeText.trim(),
+        title: `${cake.flavor} Recipe`,
       });
     } catch (error) {
       console.log(error);
