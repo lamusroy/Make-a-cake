@@ -17,26 +17,59 @@ export default function Step5Decorations() {
   const router = useRouter();
   const cake = useCakeStore((state) => state.cake);
   const toggleDecoration = useCakeStore((state) => state.toggleDecoration);
+  const setDecorations = useCakeStore((state) => state.setDecorations);
 
   const handleNext = () => {
     router.push('/step6-finetune');
   };
 
+  const handleSkip = () => {
+    setDecorations([]);
+    router.push('/step6-finetune');
+  };
+
+  const hasDecorations = cake.decorations.length > 0;
+
   return (
     <StepLayout
       step={5}
       totalSteps={6}
-      title="Add Decorations"
+      title="Add Toppings"
       subtitle="Make it extra special (optional)"
       onNext={handleNext}
       nextLabel="Next"
       canProceed={true}
     >
       <View style={styles.container}>
-        <Text style={styles.hint}>
-          <Ionicons name="information-circle" size={16} color="#A0785C" />
-          {' '}Tap to select multiple decorations
-        </Text>
+        {/* Skip Option */}
+        <TouchableOpacity
+          style={[styles.skipCard, !hasDecorations && styles.skipCardSelected]}
+          onPress={handleSkip}
+          activeOpacity={0.8}
+        >
+          <View style={[styles.skipIconContainer, !hasDecorations && styles.skipIconContainerSelected]}>
+            <Ionicons 
+              name="close-circle-outline" 
+              size={28} 
+              color={!hasDecorations ? '#FFF' : '#8B5A2B'} 
+            />
+          </View>
+          <View style={styles.skipContent}>
+            <Text style={[styles.skipTitle, !hasDecorations && styles.skipTitleSelected]}>
+              Keep it Plain
+            </Text>
+            <Text style={styles.skipSubtitle}>No toppings, just the beautiful cake</Text>
+          </View>
+          {!hasDecorations && (
+            <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
+          )}
+        </TouchableOpacity>
+
+        <View style={styles.divider}>
+          <View style={styles.dividerLine} />
+          <Text style={styles.dividerText}>or add toppings</Text>
+          <View style={styles.dividerLine} />
+        </View>
         
         <ScrollView 
           showsVerticalScrollIndicator={false}
@@ -56,7 +89,7 @@ export default function Step5Decorations() {
           </View>
         </ScrollView>
         
-        {cake.decorations.length > 0 && (
+        {hasDecorations && (
           <View style={styles.selectedContainer}>
             <Text style={styles.selectedTitle}>Selected: </Text>
             <Text style={styles.selectedText}>
@@ -133,11 +166,68 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  hint: {
-    fontSize: 14,
-    color: '#A0785C',
-    textAlign: 'center',
+  skipCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF',
+    borderRadius: 16,
+    padding: 16,
     marginBottom: 16,
+    borderWidth: 2,
+    borderColor: 'transparent',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  skipCardSelected: {
+    borderColor: '#E85A4F',
+    backgroundColor: '#FFF8F7',
+  },
+  skipIconContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#F5F0EB',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 14,
+  },
+  skipIconContainerSelected: {
+    backgroundColor: '#E85A4F',
+  },
+  skipContent: {
+    flex: 1,
+  },
+  skipTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#8B5A2B',
+  },
+  skipTitleSelected: {
+    color: '#E85A4F',
+  },
+  skipSubtitle: {
+    fontSize: 13,
+    color: '#A0785C',
+    marginTop: 2,
+  },
+  divider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#E8DDD4',
+  },
+  dividerText: {
+    paddingHorizontal: 12,
+    fontSize: 13,
+    color: '#A0785C',
+    fontWeight: '500',
   },
   scrollContent: {
     paddingBottom: 20,
