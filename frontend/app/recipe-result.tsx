@@ -317,6 +317,20 @@ export default function RecipeResult() {
         .join('\n');
     };
 
+    // Format frosting/filling recipe as list (split by periods or commas for ingredients)
+    const formatRecipeText = (recipeStr: string) => {
+      // Split by period to separate ingredients from instructions
+      const parts = recipeStr.split('. ');
+      if (parts.length > 1) {
+        // First part is ingredients, rest is instructions
+        const ingredients = parts[0].split(', ').map(ing => `• ${ing.trim()}`).join('\n');
+        const instructions = parts.slice(1).map(inst => `• ${inst.trim().replace(/\.$/, '')}`).join('\n');
+        return `${ingredients}\n${instructions}`;
+      }
+      // If no clear separation, just list by commas
+      return recipeStr.split(', ').map(item => `• ${item.trim()}`).join('\n');
+    };
+
     // Get dessert type emoji
     const getEmoji = () => {
       if (cake.dessertType === 'brownie') return '🍫';
@@ -336,17 +350,17 @@ export default function RecipeResult() {
     
     // Frosting (only if exists and not "None")
     if (recipe.frosting && cake.frosting && !cake.frosting.includes('None')) {
-      recipeText += `\nFROSTING — ${cake.frosting}\n${recipe.frosting}\n`;
+      recipeText += `\nFROSTING — ${cake.frosting}\n${formatRecipeText(recipe.frosting)}\n`;
     }
     
     // Filling (only if exists and not "None")
     if (recipe.filling && cake.filling && !cake.filling.includes('None')) {
-      recipeText += `\nFILLING — ${cake.filling}\n${recipe.filling}\n`;
+      recipeText += `\nFILLING — ${cake.filling}\n${formatRecipeText(recipe.filling)}\n`;
     }
     
     // Crust for cheesecake
     if (recipe.crust && cake.dessertType === 'cheesecake') {
-      recipeText += `\nCRUST\n${recipe.crust}\n`;
+      recipeText += `\nCRUST\n• ${recipe.crust}\n`;
     }
     
     // Mix-ins for brownies
