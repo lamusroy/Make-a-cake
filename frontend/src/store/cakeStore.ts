@@ -100,15 +100,18 @@ export const flavorOptions = [
 ];
 
 export const frostingOptions = [
+  { id: 'none', name: 'None (Plain)', color: '#F5F5F5', icon: 'close-circle-outline' },
   { id: 'buttercream', name: 'Buttercream', color: '#FFF8DC', icon: 'water' },
   { id: 'cream-cheese', name: 'Cream Cheese', color: '#FFFAF0', icon: 'cube' },
   { id: 'chocolate-ganache', name: 'Chocolate Ganache', color: '#3E2723', icon: 'moon' },
   { id: 'whipped-cream', name: 'Whipped Cream', color: '#FFFFFF', icon: 'cloud' },
-  { id: 'fondant', name: 'Fondant', color: '#E8F5E9', icon: 'ellipse' },
+  { id: 'zesty-glaze', name: 'Zesty Glaze', color: '#FFFDE7', icon: 'sunny' },
   { id: 'caramel', name: 'Caramel', color: '#D4A055', icon: 'flame' },
+  { id: 'fondant', name: 'Fondant', color: '#E8F5E9', icon: 'ellipse' },
 ];
 
 export const fillingOptions = [
+  { id: 'none', name: 'None (Plain)', color: '#F5F5F5', icon: 'close-circle-outline' },
   { id: 'strawberry-jam', name: 'Strawberry Jam', color: '#E91E63', icon: 'rose' },
   { id: 'chocolate-mousse', name: 'Chocolate Mousse', color: '#5D4037', icon: 'moon' },
   { id: 'lemon-curd', name: 'Lemon Curd', color: '#FFEB3B', icon: 'sunny' },
@@ -118,6 +121,7 @@ export const fillingOptions = [
 ];
 
 export const decorationOptions = [
+  { id: 'powdered-sugar', name: 'Powdered Sugar', icon: 'snow' },
   { id: 'sprinkles', name: 'Sprinkles', icon: 'sparkles' },
   { id: 'chocolate-chips', name: 'Choco Chips', icon: 'ellipse' },
   { id: 'fresh-fruits', name: 'Fresh Fruits', icon: 'nutrition' },
