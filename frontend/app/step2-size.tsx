@@ -72,9 +72,9 @@ export default function Step2Size() {
   return (
     <StepLayout
       step={2}
-      totalSteps={6}
+      totalSteps={getTotalSteps()}
       title="Choose Your Size"
-      subtitle="How much cake do you need?"
+      subtitle={cake.dessertType === 'brownie' ? 'How much brownie?' : cake.dessertType === 'cheesecake' ? 'How big is your cheesecake?' : 'How much cake do you need?'}
       onNext={handleNext}
       canProceed={!!cake.cakeSize}
     >
