@@ -27,12 +27,15 @@ export interface CakeConfig {
 
 interface CakeStore {
   cake: CakeConfig;
-  setFlavor: (flavor: string, color: string) => void;
+  setFlavor: (flavor: string, color: string, type: 'cake' | 'brownie' | 'cheesecake') => void;
   setCakeSize: (size: string, multiplier: number) => void;
   setFrosting: (frosting: string, color: string) => void;
   setFilling: (filling: string, color: string) => void;
   setDecorations: (decorations: string[]) => void;
   toggleDecoration: (decoration: string) => void;
+  setMixIns: (mixIns: string[]) => void;
+  toggleMixIn: (mixIn: string) => void;
+  setCrust: (crust: string, color: string) => void;
   setFatType: (value: number) => void;
   setFluffiness: (value: number) => void;
   setSweetness: (value: number) => void;
