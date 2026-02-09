@@ -79,11 +79,13 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   sectionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#8B5A2B',
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#8B7355',
     marginBottom: 12,
     marginTop: 8,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
   optionsGrid: {
     flexDirection: 'row',
