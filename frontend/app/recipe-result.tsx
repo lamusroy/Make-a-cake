@@ -254,13 +254,22 @@ const generateRecipe = (cake: any) => {
     getRiseAdjustment(cake.riseIntensity),
   ].filter(tip => tip && tip !== 'Standard sugar amount' && tip !== 'Use recipe as-is' && tip !== 'Standard leavening' && tip !== 'Standard egg amount');
 
+  // Get mix-in instructions for brownies
+  const mixInInstructionsList = cake.mixIns.map((id: string) => mixInInstructions[id]).filter(Boolean);
+
   return {
     base: recipes[cake.flavor || 'Vanilla'],
-    frosting: frostings[cake.frosting || 'Buttercream'],
-    filling: fillings[cake.filling || 'None (Plain)'],
+    frosting: cake.dessertType === 'cake' ? frostings[cake.frosting || 'Buttercream'] : null,
+    filling: cake.dessertType === 'cake' ? fillings[cake.filling || 'None (Plain)'] : null,
     sizeInfo: sizeInfo,
+    dessertType: cake.dessertType,
     decorations: cake.decorations.map((id: string) => decorationOptions.find(d => d.id === id)?.name).filter(Boolean),
     toppingInstructions: cake.decorations.map((id: string) => toppings[id]).filter(Boolean),
+    // Brownie specific
+    mixIns: cake.mixIns.map((id: string) => mixInOptions.find(m => m.id === id)?.name).filter(Boolean),
+    mixInInstructions: mixInInstructionsList,
+    // Cheesecake specific
+    crust: cake.crust,
     fineTuning: {
       fatType: fatInfo.name,
       fluffiness: cake.fluffiness > 50 ? 'Extra Fluffy (whipped whites)' : 'Dense (whole eggs)',
