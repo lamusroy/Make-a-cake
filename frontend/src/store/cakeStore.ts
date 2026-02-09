@@ -94,9 +94,9 @@ export const flavorOptions = [
   { id: 'vanilla', name: 'Vanilla', color: '#F5E6D3', icon: 'snow-outline' },
   { id: 'chocolate', name: 'Chocolate', color: '#5D4037', icon: 'square' },
   { id: 'red-velvet', name: 'Red Velvet', color: '#B71C1C', icon: 'heart' },
-  { id: 'strawberry', name: 'Strawberry', color: '#F48FB1', icon: 'rose' },
-  { id: 'lemon', name: 'Lemon', color: '#FFF59D', icon: 'sunny' },
   { id: 'carrot', name: 'Carrot', color: '#FF9800', icon: 'nutrition' },
+  { id: 'lemon', name: 'Lemon', color: '#FFF59D', icon: 'sunny' },
+  { id: 'orange', name: 'Orange', color: '#FFB74D', icon: 'ellipse' },
 ];
 
 export const frostingOptions = [
