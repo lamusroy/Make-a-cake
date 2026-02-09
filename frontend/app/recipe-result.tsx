@@ -150,11 +150,11 @@ const generateRecipe = (cake: any) => {
       instructions: [
         'Preheat oven to 350°F (175°C). Grease and flour cake pans.',
         `Cream ${fatInfo.name.toLowerCase()} and sugar until light.`,
-        `Add eggs ${cake.fluffiness > 66 ? '(yolks first)' : 'one at a time'}, then lemon juice and zest.`,
+        `Add eggs ${cake.fluffiness > 50 ? '(yolks first)' : 'one at a time'}, then lemon juice and zest.`,
         'Combine dry ingredients. Add alternately with milk.',
-        cake.fluffiness > 66 ? 'Gently fold in whipped egg whites.' : '',
+        cake.fluffiness > 50 ? 'Gently fold in whipped egg whites.' : '',
         'Pour into pans and bake for 30-35 minutes.',
-        'Let cool before adding frosting.',
+        'Pairs wonderfully with Zesty Glaze!',
       ].filter(Boolean),
     },
     'Carrot': {
@@ -162,9 +162,9 @@ const generateRecipe = (cake: any) => {
       instructions: [
         'Preheat oven to 350°F (175°C). Grease and flour cake pans.',
         'Mix flour, sugar, cinnamon, baking soda, and baking powder.',
-        `Add ${fatInfo.name.toLowerCase()} and ${cake.fluffiness > 66 ? 'egg yolks' : 'eggs'}, beat until combined.`,
+        `Add ${fatInfo.name.toLowerCase()} and ${cake.fluffiness > 50 ? 'egg yolks' : 'eggs'}, beat until combined.`,
         'Fold in shredded carrots and walnuts if using.',
-        cake.fluffiness > 66 ? 'Fold in stiffly whipped egg whites for lighter texture.' : '',
+        cake.fluffiness > 50 ? 'Fold in stiffly whipped egg whites for lighter texture.' : '',
         'Pour into pans and bake for 35-40 minutes.',
         'Cool completely before frosting.',
       ].filter(Boolean),
