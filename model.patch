@@ -1,89 +1,94 @@
-diff --git a/frontend/src/store/cakeStore.ts b/frontend/src/store/cakeStore.ts
-index bc4a544..e607341 100644
---- a/frontend/src/store/cakeStore.ts
-+++ b/frontend/src/store/cakeStore.ts
-@@ -3,6 +3,7 @@ import { create } from 'zustand';
- export interface CakeConfig {
-   flavor: string | null;
-   flavorColor: string | null;
-+  dessertType: 'cake' | 'brownie' | 'cheesecake'; // Type determines flow
-   cakeSize: string | null; // 'small' | 'medium' | 'large' | 'party'
-   sizeMultiplier: number; // Recipe multiplier based on size
-   frosting: string | null;
-@@ -10,6 +11,11 @@ export interface CakeConfig {
-   filling: string | null;
-   fillingColor: string | null;
-   decorations: string[];
-+  // Brownie-specific
-+  mixIns: string[];
-+  // Cheesecake-specific
-+  crust: string | null;
-+  crustColor: string | null;
-   // Fine-tuning options
-   fatType: number; // 0 = Butter, 100 = Oil
-   fluffiness: number; // 0 = Whole eggs (dense), 100 = Whipped whites (fluffy)
-@@ -21,12 +27,15 @@ export interface CakeConfig {
- 
- interface CakeStore {
-   cake: CakeConfig;
--  setFlavor: (flavor: string, color: string) => void;
-+  setFlavor: (flavor: string, color: string, type: 'cake' | 'brownie' | 'cheesecake') => void;
-   setCakeSize: (size: string, multiplier: number) => void;
-   setFrosting: (frosting: string, color: string) => void;
-   setFilling: (filling: string, color: string) => void;
-   setDecorations: (decorations: string[]) => void;
-   toggleDecoration: (decoration: string) => void;
-+  setMixIns: (mixIns: string[]) => void;
-+  toggleMixIn: (mixIn: string) => void;
-+  setCrust: (crust: string, color: string) => void;
-   setFatType: (value: number) => void;
-   setFluffiness: (value: number) => void;
-   setSweetness: (value: number) => void;
-@@ -39,6 +48,7 @@ interface CakeStore {
- const initialCake: CakeConfig = {
-   flavor: null,
-   flavorColor: null,
-+  dessertType: 'cake',
-   cakeSize: null,
-   sizeMultiplier: 1,
-   frosting: null,
-@@ -46,6 +56,9 @@ const initialCake: CakeConfig = {
-   filling: null,
-   fillingColor: null,
-   decorations: [],
-+  mixIns: [],
-+  crust: null,
-+  crustColor: null,
-   fatType: 0, // Butter by default
-   fluffiness: 0, // Whole eggs by default
-   sweetness: 0, // Standard
-@@ -56,8 +69,8 @@ const initialCake: CakeConfig = {
- 
- export const useCakeStore = create<CakeStore>((set) => ({
-   cake: initialCake,
--  setFlavor: (flavor, color) =>
--    set((state) => ({ cake: { ...state.cake, flavor, flavorColor: color } })),
-+  setFlavor: (flavor, color, type) =>
-+    set((state) => ({ cake: { ...state.cake, flavor, flavorColor: color, dessertType: type } })),
-   setCakeSize: (cakeSize, sizeMultiplier) =>
-     set((state) => ({ cake: { ...state.cake, cakeSize, sizeMultiplier } })),
-   setFrosting: (frosting, color) =>
-@@ -74,6 +87,18 @@ export const useCakeStore = create<CakeStore>((set) => ({
-         : [...current, decoration];
-       return { cake: { ...state.cake, decorations: newDecorations } };
-     }),
-+  setMixIns: (mixIns) =>
-+    set((state) => ({ cake: { ...state.cake, mixIns } })),
-+  toggleMixIn: (mixIn) =>
-+    set((state) => {
-+      const current = state.cake.mixIns;
-+      const newMixIns = current.includes(mixIn)
-+        ? current.filter((m) => m !== mixIn)
-+        : [...current, mixIn];
-+      return { cake: { ...state.cake, mixIns: newMixIns } };
-+    }),
-+  setCrust: (crust, color) =>
-+    set((state) => ({ cake: { ...state.cake, crust, crustColor: color } })),
-   setFatType: (fatType) =>
-     set((state) => ({ cake: { ...state.cake, fatType } })),
-   setFluffiness: (fluffiness) =>
+diff --git a/model.patch b/model.patch
+index e4993b8..e69de29 100644
+--- a/model.patch
++++ b/model.patch
+@@ -1,89 +0,0 @@
+-diff --git a/frontend/src/store/cakeStore.ts b/frontend/src/store/cakeStore.ts
+-index bc4a544..e607341 100644
+---- a/frontend/src/store/cakeStore.ts
+-+++ b/frontend/src/store/cakeStore.ts
+-@@ -3,6 +3,7 @@ import { create } from 'zustand';
+- export interface CakeConfig {
+-   flavor: string | null;
+-   flavorColor: string | null;
+-+  dessertType: 'cake' | 'brownie' | 'cheesecake'; // Type determines flow
+-   cakeSize: string | null; // 'small' | 'medium' | 'large' | 'party'
+-   sizeMultiplier: number; // Recipe multiplier based on size
+-   frosting: string | null;
+-@@ -10,6 +11,11 @@ export interface CakeConfig {
+-   filling: string | null;
+-   fillingColor: string | null;
+-   decorations: string[];
+-+  // Brownie-specific
+-+  mixIns: string[];
+-+  // Cheesecake-specific
+-+  crust: string | null;
+-+  crustColor: string | null;
+-   // Fine-tuning options
+-   fatType: number; // 0 = Butter, 100 = Oil
+-   fluffiness: number; // 0 = Whole eggs (dense), 100 = Whipped whites (fluffy)
+-@@ -21,12 +27,15 @@ export interface CakeConfig {
+- 
+- interface CakeStore {
+-   cake: CakeConfig;
+--  setFlavor: (flavor: string, color: string) => void;
+-+  setFlavor: (flavor: string, color: string, type: 'cake' | 'brownie' | 'cheesecake') => void;
+-   setCakeSize: (size: string, multiplier: number) => void;
+-   setFrosting: (frosting: string, color: string) => void;
+-   setFilling: (filling: string, color: string) => void;
+-   setDecorations: (decorations: string[]) => void;
+-   toggleDecoration: (decoration: string) => void;
+-+  setMixIns: (mixIns: string[]) => void;
+-+  toggleMixIn: (mixIn: string) => void;
+-+  setCrust: (crust: string, color: string) => void;
+-   setFatType: (value: number) => void;
+-   setFluffiness: (value: number) => void;
+-   setSweetness: (value: number) => void;
+-@@ -39,6 +48,7 @@ interface CakeStore {
+- const initialCake: CakeConfig = {
+-   flavor: null,
+-   flavorColor: null,
+-+  dessertType: 'cake',
+-   cakeSize: null,
+-   sizeMultiplier: 1,
+-   frosting: null,
+-@@ -46,6 +56,9 @@ const initialCake: CakeConfig = {
+-   filling: null,
+-   fillingColor: null,
+-   decorations: [],
+-+  mixIns: [],
+-+  crust: null,
+-+  crustColor: null,
+-   fatType: 0, // Butter by default
+-   fluffiness: 0, // Whole eggs by default
+-   sweetness: 0, // Standard
+-@@ -56,8 +69,8 @@ const initialCake: CakeConfig = {
+- 
+- export const useCakeStore = create<CakeStore>((set) => ({
+-   cake: initialCake,
+--  setFlavor: (flavor, color) =>
+--    set((state) => ({ cake: { ...state.cake, flavor, flavorColor: color } })),
+-+  setFlavor: (flavor, color, type) =>
+-+    set((state) => ({ cake: { ...state.cake, flavor, flavorColor: color, dessertType: type } })),
+-   setCakeSize: (cakeSize, sizeMultiplier) =>
+-     set((state) => ({ cake: { ...state.cake, cakeSize, sizeMultiplier } })),
+-   setFrosting: (frosting, color) =>
+-@@ -74,6 +87,18 @@ export const useCakeStore = create<CakeStore>((set) => ({
+-         : [...current, decoration];
+-       return { cake: { ...state.cake, decorations: newDecorations } };
+-     }),
+-+  setMixIns: (mixIns) =>
+-+    set((state) => ({ cake: { ...state.cake, mixIns } })),
+-+  toggleMixIn: (mixIn) =>
+-+    set((state) => {
+-+      const current = state.cake.mixIns;
+-+      const newMixIns = current.includes(mixIn)
+-+        ? current.filter((m) => m !== mixIn)
+-+        : [...current, mixIn];
+-+      return { cake: { ...state.cake, mixIns: newMixIns } };
+-+    }),
+-+  setCrust: (crust, color) =>
+-+    set((state) => ({ cake: { ...state.cake, crust, crustColor: color } })),
+-   setFatType: (fatType) =>
+-     set((state) => ({ cake: { ...state.cake, fatType } })),
+-   setFluffiness: (fluffiness) =>
