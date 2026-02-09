@@ -35,7 +35,7 @@ export const StepLayout: React.FC<StepLayoutProps> = ({
   children,
   onNext,
   onBack,
-  nextLabel = 'Next',
+  nextLabel = 'Continue',
   showPreview = true,
   canProceed = true,
 }) => {
@@ -50,6 +50,8 @@ export const StepLayout: React.FC<StepLayoutProps> = ({
     }
   };
 
+  const progress = (step / totalSteps) * 100;
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <StatusBar barStyle="dark-content" />
@@ -57,11 +59,11 @@ export const StepLayout: React.FC<StepLayoutProps> = ({
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#8B5A2B" />
+          <Ionicons name="chevron-back" size={24} color="#6B5B4F" />
         </TouchableOpacity>
         
-        <View style={styles.stepIndicator}>
-          <Text style={styles.stepText}>Step {step}/{totalSteps}</Text>
+        <View style={styles.stepBadge}>
+          <Text style={styles.stepText}>{step} of {totalSteps}</Text>
         </View>
         
         <View style={styles.placeholder} />
@@ -70,12 +72,7 @@ export const StepLayout: React.FC<StepLayoutProps> = ({
       {/* Progress Bar */}
       <View style={styles.progressContainer}>
         <View style={styles.progressBar}>
-          <View 
-            style={[
-              styles.progressFill, 
-              { width: `${(step / totalSteps) * 100}%` }
-            ]} 
-          />
+          <View style={[styles.progressFill, { width: `${progress}%` }]} />
         </View>
       </View>
       
@@ -103,10 +100,10 @@ export const StepLayout: React.FC<StepLayoutProps> = ({
           style={[styles.nextButton, !canProceed && styles.nextButtonDisabled]}
           onPress={onNext}
           disabled={!canProceed}
-          activeOpacity={0.8}
+          activeOpacity={0.85}
         >
           <Text style={styles.nextButtonText}>{nextLabel}</Text>
-          <Ionicons name="arrow-forward" size={22} color="#FFF" />
+          <Ionicons name="arrow-forward" size={20} color="#FFF" />
         </TouchableOpacity>
       </View>
     </View>
@@ -116,7 +113,7 @@ export const StepLayout: React.FC<StepLayoutProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF5E4',
+    backgroundColor: '#FAF7F2',
   },
   header: {
     flexDirection: 'row',
@@ -128,25 +125,25 @@ const styles = StyleSheet.create({
   backButton: {
     width: 44,
     height: 44,
-    borderRadius: 22,
+    borderRadius: 12,
     backgroundColor: '#FFF',
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.06,
     shadowRadius: 4,
-    elevation: 3,
+    elevation: 2,
   },
-  stepIndicator: {
-    backgroundColor: '#E85A4F',
+  stepBadge: {
+    backgroundColor: '#F5EEE6',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
   },
   stepText: {
-    color: '#FFF',
-    fontWeight: '700',
+    color: '#8B7355',
+    fontWeight: '600',
     fontSize: 14,
   },
   placeholder: {
@@ -154,18 +151,18 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     paddingHorizontal: 20,
-    marginTop: 8,
+    marginTop: 4,
   },
   progressBar: {
-    height: 8,
-    backgroundColor: '#E8DDD4',
-    borderRadius: 4,
+    height: 4,
+    backgroundColor: '#EDE6DC',
+    borderRadius: 2,
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#E85A4F',
-    borderRadius: 4,
+    backgroundColor: '#C4704F',
+    borderRadius: 2,
   },
   titleContainer: {
     alignItems: 'center',
@@ -173,14 +170,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   title: {
-    fontSize: 28,
-    fontWeight: '800',
-    color: '#8B5A2B',
+    fontSize: 26,
+    fontWeight: '700',
+    color: '#4A3F35',
     textAlign: 'center',
   },
   subtitle: {
-    fontSize: 16,
-    color: '#A0785C',
+    fontSize: 15,
+    color: '#8B7355',
     marginTop: 6,
     textAlign: 'center',
   },
@@ -197,26 +194,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   nextButton: {
-    backgroundColor: '#E85A4F',
+    backgroundColor: '#C4704F',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 16,
-    borderRadius: 30,
-    shadowColor: '#E85A4F',
+    borderRadius: 14,
+    shadowColor: '#C4704F',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.35,
-    shadowRadius: 10,
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
     elevation: 6,
     gap: 8,
   },
   nextButtonDisabled: {
-    backgroundColor: '#CCC',
-    shadowColor: '#999',
+    backgroundColor: '#D4C4B5',
+    shadowColor: '#D4C4B5',
   },
   nextButtonText: {
     color: '#FFF',
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: 17,
+    fontWeight: '600',
   },
 });
