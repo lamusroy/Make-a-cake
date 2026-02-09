@@ -606,6 +606,24 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#8B5A2B',
   },
+  toppingInstructions: {
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#F0E8E0',
+    gap: 8,
+  },
+  toppingInstructionRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+  },
+  toppingInstructionText: {
+    flex: 1,
+    fontSize: 13,
+    color: '#5D4037',
+    lineHeight: 18,
+  },
   tipsCard: {
     backgroundColor: '#FFF9E8',
     borderWidth: 2,
