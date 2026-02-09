@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { StepLayout } from '../src/components/StepLayout';
 import { OptionCard } from '../src/components/OptionCard';
@@ -13,7 +13,7 @@ export default function Step1Flavor() {
   const handleSelect = (id: string, color?: string) => {
     const option = flavorOptions.find(o => o.id === id);
     if (option) {
-      setFlavor(option.name, option.color);
+      setFlavor(option.name, option.color, option.type as 'cake' | 'brownie' | 'cheesecake');
     }
   };
 
@@ -21,12 +21,16 @@ export default function Step1Flavor() {
     router.push('/step2-size');
   };
 
+  // Group options by type
+  const cakeOptions = flavorOptions.filter(o => o.type === 'cake');
+  const specialOptions = flavorOptions.filter(o => o.type !== 'cake');
+
   return (
     <StepLayout
       step={1}
       totalSteps={6}
-      title="Choose Your Flavor"
-      subtitle="Pick the base flavor for your cake"
+      title="Choose Your Dessert"
+      subtitle="Pick your base flavor or dessert type"
       onNext={handleNext}
       canProceed={!!cake.flavor}
     >
@@ -34,8 +38,26 @@ export default function Step1Flavor() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
+        {/* Classic Cakes */}
+        <Text style={styles.sectionTitle}>Classic Cakes</Text>
         <View style={styles.optionsGrid}>
-          {flavorOptions.map((option) => (
+          {cakeOptions.map((option) => (
+            <OptionCard
+              key={option.id}
+              id={option.id}
+              name={option.name}
+              color={option.color}
+              icon={option.icon}
+              selected={cake.flavor === option.name}
+              onSelect={handleSelect}
+            />
+          ))}
+        </View>
+
+        {/* Special Desserts */}
+        <Text style={styles.sectionTitle}>Special Desserts</Text>
+        <View style={styles.optionsGrid}>
+          {specialOptions.map((option) => (
             <OptionCard
               key={option.id}
               id={option.id}
@@ -56,9 +78,17 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingBottom: 20,
   },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#8B5A2B',
+    marginBottom: 12,
+    marginTop: 8,
+  },
   optionsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    marginBottom: 16,
   },
 });
