@@ -700,10 +700,23 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 16,
   },
+  mixInBadge: {
+    backgroundColor: '#D7CCC8',
+  },
   decorationText: {
     fontSize: 14,
     fontWeight: '600',
     color: '#8B5A2B',
+  },
+  brownieCard: {
+    backgroundColor: '#EFEBE9',
+    borderWidth: 2,
+    borderColor: '#BCAAA4',
+  },
+  cheesecakeCard: {
+    backgroundColor: '#FFF8E1',
+    borderWidth: 2,
+    borderColor: '#FFE082',
   },
   toppingInstructions: {
     marginTop: 12,
