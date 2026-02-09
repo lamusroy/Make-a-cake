@@ -297,7 +297,7 @@ Made with Make a Cake app! 🍰
           <Text style={styles.celebrationEmoji}>🎉</Text>
           <Text style={styles.celebrationTitle}>Your Cake is Ready!</Text>
           <Text style={styles.celebrationSubtitle}>
-            Here's the recipe for your {cake.layers}-layer {cake.flavor} cake
+            {recipe.sizeInfo.name} {cake.flavor} cake ({recipe.sizeInfo.servings} servings)
           </Text>
         </Animated.View>
         
