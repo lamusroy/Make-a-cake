@@ -29,13 +29,17 @@ export default function Step5Decorations() {
   };
 
   const hasDecorations = cake.decorations.length > 0;
+  
+  // For cheesecake, this is step 4 of 5
+  const stepNumber = cake.dessertType === 'cheesecake' ? 4 : 5;
+  const totalSteps = cake.dessertType === 'cheesecake' ? 5 : 6;
 
   return (
     <StepLayout
-      step={5}
-      totalSteps={6}
+      step={stepNumber}
+      totalSteps={totalSteps}
       title="Add Toppings"
-      subtitle="Make it extra special (optional)"
+      subtitle={cake.dessertType === 'cheesecake' ? 'Top your cheesecake (optional)' : 'Make it extra special (optional)'}
       onNext={handleNext}
       nextLabel="Next"
       canProceed={true}
