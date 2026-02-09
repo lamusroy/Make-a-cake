@@ -576,8 +576,8 @@ export default function RecipeResult() {
         <Animated.View entering={FadeInDown.delay(900).duration(500)}>
           <View style={[styles.recipeCard, styles.tipsCard]}>
             <View style={styles.cardHeader}>
-              <Ionicons name="bulb" size={24} color="#FFB74D" />
-              <Text style={[styles.cardTitle, { color: '#8B5A2B' }]}>Pro Tips</Text>
+              <Ionicons name="bulb" size={24} color="#D4A055" />
+              <Text style={[styles.cardTitle, { color: '#6B5B4F' }]}>Pro Tips</Text>
             </View>
             <Text style={styles.tipsText}>
               • Room temperature ingredients mix better{"\n"}
@@ -594,10 +594,10 @@ export default function RecipeResult() {
         <TouchableOpacity
           style={styles.startOverButton}
           onPress={handleStartOver}
-          activeOpacity={0.8}
+          activeOpacity={0.85}
         >
-          <Ionicons name="refresh" size={22} color="#FFF" />
-          <Text style={styles.startOverText}>Make Another Cake</Text>
+          <Ionicons name="add" size={22} color="#FFF" />
+          <Text style={styles.startOverText}>Make Another</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -607,7 +607,7 @@ export default function RecipeResult() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF5E4',
+    backgroundColor: '#FAF7F2',
   },
   header: {
     flexDirection: 'row',
@@ -618,15 +618,15 @@ const styles = StyleSheet.create({
   backButton: {
     width: 44,
     height: 44,
-    borderRadius: 22,
+    borderRadius: 12,
     backgroundColor: '#FFF',
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.06,
     shadowRadius: 4,
-    elevation: 3,
+    elevation: 2,
   },
   shareButton: {
     width: 44,
