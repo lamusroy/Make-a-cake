@@ -91,12 +91,14 @@ export const useCakeStore = create<CakeStore>((set) => ({
 
 // Cake options data
 export const flavorOptions = [
-  { id: 'vanilla', name: 'Vanilla', color: '#F5E6D3', icon: 'snow-outline' },
-  { id: 'chocolate', name: 'Chocolate', color: '#5D4037', icon: 'square' },
-  { id: 'red-velvet', name: 'Red Velvet', color: '#B71C1C', icon: 'heart' },
-  { id: 'carrot', name: 'Carrot', color: '#FF9800', icon: 'nutrition' },
-  { id: 'lemon', name: 'Lemon', color: '#FFF59D', icon: 'sunny' },
-  { id: 'orange', name: 'Orange', color: '#FFB74D', icon: 'ellipse' },
+  { id: 'vanilla', name: 'Vanilla', color: '#F5E6D3', icon: 'snow-outline', type: 'cake' },
+  { id: 'chocolate', name: 'Chocolate', color: '#5D4037', icon: 'square', type: 'cake' },
+  { id: 'red-velvet', name: 'Red Velvet', color: '#B71C1C', icon: 'heart', type: 'cake' },
+  { id: 'carrot', name: 'Carrot', color: '#FF9800', icon: 'nutrition', type: 'cake' },
+  { id: 'lemon', name: 'Lemon', color: '#FFF59D', icon: 'sunny', type: 'cake' },
+  { id: 'orange', name: 'Orange', color: '#FFB74D', icon: 'ellipse', type: 'cake' },
+  { id: 'brownie', name: 'Brownie', color: '#3E2723', icon: 'grid', type: 'brownie' },
+  { id: 'cheesecake', name: 'Cheesecake', color: '#FFF8E1', icon: 'pie-chart', type: 'cheesecake' },
 ];
 
 export const frostingOptions = [
