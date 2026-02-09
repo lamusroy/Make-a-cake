@@ -432,6 +432,50 @@ Made with Make a Cake app! 🍰
           </Animated.View>
         )}
         
+        {/* Brownie Mix-ins */}
+        {recipe.mixIns && recipe.mixIns.length > 0 && (
+          <Animated.View entering={FadeInDown.delay(700).duration(500)}>
+            <View style={[styles.recipeCard, styles.brownieCard]}>
+              <View style={styles.cardHeader}>
+                <Ionicons name="grid" size={24} color="#5D4037" />
+                <Text style={[styles.cardTitle, { color: '#5D4037' }]}>Mix-ins</Text>
+              </View>
+              <View style={styles.decorationsList}>
+                {recipe.mixIns.map((mixIn: string, index: number) => (
+                  <View key={index} style={[styles.decorationBadge, styles.mixInBadge]}>
+                    <Text style={[styles.decorationText, { color: '#5D4037' }]}>{mixIn}</Text>
+                  </View>
+                ))}
+              </View>
+              {recipe.mixInInstructions && recipe.mixInInstructions.length > 0 && (
+                <View style={styles.toppingInstructions}>
+                  {recipe.mixInInstructions.map((instruction: string, index: number) => (
+                    <View key={index} style={styles.toppingInstructionRow}>
+                      <Ionicons name="checkmark-circle" size={16} color="#5D4037" />
+                      <Text style={styles.toppingInstructionText}>{instruction}</Text>
+                    </View>
+                  ))}
+                </View>
+              )}
+            </View>
+          </Animated.View>
+        )}
+        
+        {/* Cheesecake Crust */}
+        {recipe.crust && (
+          <Animated.View entering={FadeInDown.delay(650).duration(500)}>
+            <View style={[styles.recipeCard, styles.cheesecakeCard]}>
+              <View style={styles.cardHeader}>
+                <Ionicons name="albums" size={24} color="#FF8F00" />
+                <Text style={[styles.cardTitle, { color: '#FF8F00' }]}>Crust - {recipe.crust}</Text>
+              </View>
+              <Text style={styles.cardContent}>
+                Crush cookies/crackers finely, mix with melted butter and sugar, press firmly into pan bottom.
+              </Text>
+            </View>
+          </Animated.View>
+        )}
+        
         {recipe.decorations.length > 0 && (
           <Animated.View entering={FadeInDown.delay(800).duration(500)}>
             <View style={styles.recipeCard}>
