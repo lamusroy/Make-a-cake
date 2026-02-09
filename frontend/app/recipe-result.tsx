@@ -359,20 +359,26 @@ Made with Make a Cake app! 🍰
       >
         {/* Celebration */}
         <Animated.View style={[styles.celebrationContainer, celebrationStyle]}>
-          <Text style={styles.celebrationEmoji}>🎉</Text>
-          <Text style={styles.celebrationTitle}>Your Cake is Ready!</Text>
+          <Text style={styles.celebrationEmoji}>{cake.dessertType === 'brownie' ? '🍫' : cake.dessertType === 'cheesecake' ? '🧀' : '🎉'}</Text>
+          <Text style={styles.celebrationTitle}>
+            {cake.dessertType === 'brownie' ? 'Your Brownies are Ready!' : 
+             cake.dessertType === 'cheesecake' ? 'Your Cheesecake is Ready!' : 
+             'Your Cake is Ready!'}
+          </Text>
           <Text style={styles.celebrationSubtitle}>
-            {recipe.sizeInfo.name} {cake.flavor} cake ({recipe.sizeInfo.servings} servings)
+            {recipe.sizeInfo.name} {cake.flavor} ({recipe.sizeInfo.servings} servings)
           </Text>
         </Animated.View>
         
-        {/* Cake Preview */}
-        <Animated.View 
-          entering={FadeInDown.delay(200).duration(500)}
-          style={styles.previewSection}
-        >
-          <CakePreview size="large" />
-        </Animated.View>
+        {/* Cake Preview - only for regular cakes */}
+        {cake.dessertType === 'cake' && (
+          <Animated.View 
+            entering={FadeInDown.delay(200).duration(500)}
+            style={styles.previewSection}
+          >
+            <CakePreview size="large" />
+          </Animated.View>
+        )}
         
         {/* Recipe Cards */}
         <Animated.View entering={FadeInDown.delay(400).duration(500)}>
