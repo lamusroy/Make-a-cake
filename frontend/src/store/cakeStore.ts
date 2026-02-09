@@ -48,6 +48,7 @@ interface CakeStore {
 const initialCake: CakeConfig = {
   flavor: null,
   flavorColor: null,
+  dessertType: 'cake',
   cakeSize: null,
   sizeMultiplier: 1,
   frosting: null,
@@ -55,6 +56,9 @@ const initialCake: CakeConfig = {
   filling: null,
   fillingColor: null,
   decorations: [],
+  mixIns: [],
+  crust: null,
+  crustColor: null,
   fatType: 0, // Butter by default
   fluffiness: 0, // Whole eggs by default
   sweetness: 0, // Standard
