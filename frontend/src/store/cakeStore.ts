@@ -3,6 +3,7 @@ import { create } from 'zustand';
 export interface CakeConfig {
   flavor: string | null;
   flavorColor: string | null;
+  dessertType: 'cake' | 'brownie' | 'cheesecake'; // Type determines flow
   cakeSize: string | null; // 'small' | 'medium' | 'large' | 'party'
   sizeMultiplier: number; // Recipe multiplier based on size
   frosting: string | null;
@@ -10,6 +11,11 @@ export interface CakeConfig {
   filling: string | null;
   fillingColor: string | null;
   decorations: string[];
+  // Brownie-specific
+  mixIns: string[];
+  // Cheesecake-specific
+  crust: string | null;
+  crustColor: string | null;
   // Fine-tuning options
   fatType: number; // 0 = Butter, 100 = Oil
   fluffiness: number; // 0 = Whole eggs (dense), 100 = Whipped whites (fluffy)
