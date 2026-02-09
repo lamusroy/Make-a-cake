@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Dimensions,
   StatusBar,
-  Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import Animated, {
@@ -27,133 +26,86 @@ export default function HomeScreen() {
   const router = useRouter();
   const resetCake = useCakeStore((state) => state.resetCake);
 
-  // Animations
-  const cakeScale = useSharedValue(1);
+  // Subtle animations
   const cakeBounce = useSharedValue(0);
   const buttonScale = useSharedValue(1);
-  const sparkle1 = useSharedValue(0);
-  const sparkle2 = useSharedValue(0);
-  const sparkle3 = useSharedValue(0);
+  const steamOpacity = useSharedValue(0);
 
   useEffect(() => {
-    // Cake bounce animation
+    // Gentle float animation
     cakeBounce.value = withRepeat(
       withSequence(
-        withTiming(-10, { duration: 500, easing: Easing.inOut(Easing.ease) }),
-        withTiming(0, { duration: 500, easing: Easing.inOut(Easing.ease) })
+        withTiming(-6, { duration: 2000, easing: Easing.inOut(Easing.ease) }),
+        withTiming(0, { duration: 2000, easing: Easing.inOut(Easing.ease) })
       ),
       -1,
       true
     );
 
-    // Sparkle animations
-    sparkle1.value = withRepeat(
+    // Steam effect
+    steamOpacity.value = withRepeat(
       withSequence(
-        withTiming(1, { duration: 800 }),
-        withTiming(0, { duration: 800 })
+        withTiming(0.6, { duration: 1500 }),
+        withTiming(0.2, { duration: 1500 })
       ),
       -1,
       true
     );
-    
-    setTimeout(() => {
-      sparkle2.value = withRepeat(
-        withSequence(
-          withTiming(1, { duration: 700 }),
-          withTiming(0, { duration: 700 })
-        ),
-        -1,
-        true
-      );
-    }, 300);
-    
-    setTimeout(() => {
-      sparkle3.value = withRepeat(
-        withSequence(
-          withTiming(1, { duration: 900 }),
-          withTiming(0, { duration: 900 })
-        ),
-        -1,
-        true
-      );
-    }, 600);
   }, []);
 
   const cakeAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [
-      { scale: cakeScale.value },
-      { translateY: cakeBounce.value }
-    ],
+    transform: [{ translateY: cakeBounce.value }],
   }));
 
   const buttonAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: buttonScale.value }],
   }));
 
-  const sparkle1Style = useAnimatedStyle(() => ({
-    opacity: sparkle1.value,
-    transform: [{ scale: 0.5 + sparkle1.value * 0.5 }],
-  }));
-
-  const sparkle2Style = useAnimatedStyle(() => ({
-    opacity: sparkle2.value,
-    transform: [{ scale: 0.5 + sparkle2.value * 0.5 }],
-  }));
-
-  const sparkle3Style = useAnimatedStyle(() => ({
-    opacity: sparkle3.value,
-    transform: [{ scale: 0.5 + sparkle3.value * 0.5 }],
+  const steamStyle = useAnimatedStyle(() => ({
+    opacity: steamOpacity.value,
   }));
 
   const handleStartBaking = () => {
     buttonScale.value = withSequence(
-      withSpring(0.9),
-      withSpring(1.1),
+      withSpring(0.95),
       withSpring(1)
     );
     resetCake();
     setTimeout(() => {
       router.push('/step1-flavor');
-    }, 200);
+    }, 150);
   };
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
       
-      {/* Background decorations */}
-      <View style={styles.bgDecoration1} />
-      <View style={styles.bgDecoration2} />
-      <View style={styles.bgDecoration3} />
-
-      {/* Sparkles */}
-      <Animated.View style={[styles.sparkle, styles.sparkle1, sparkle1Style]}>
-        <Ionicons name="sparkles" size={32} color="#FFD93D" />
-      </Animated.View>
-      <Animated.View style={[styles.sparkle, styles.sparkle2, sparkle2Style]}>
-        <Ionicons name="star" size={24} color="#FF6B9D" />
-      </Animated.View>
-      <Animated.View style={[styles.sparkle, styles.sparkle3, sparkle3Style]}>
-        <Ionicons name="sparkles" size={28} color="#95E1D3" />
-      </Animated.View>
+      {/* Subtle background elements */}
+      <View style={styles.bgCircle1} />
+      <View style={styles.bgCircle2} />
 
       {/* Title */}
       <View style={styles.titleContainer}>
         <Text style={styles.titleTop}>Make a</Text>
-        <Text style={styles.titleMain}>CAKE!</Text>
-        <Text style={styles.subtitle}>Create your dream cake & get the recipe</Text>
+        <Text style={styles.titleMain}>Cake</Text>
+        <View style={styles.subtitleContainer}>
+          <View style={styles.subtitleLine} />
+          <Text style={styles.subtitle}>Recipe Builder</Text>
+          <View style={styles.subtitleLine} />
+        </View>
       </View>
 
-      {/* Animated Cake */}
+      {/* Cake Illustration */}
       <Animated.View style={[styles.cakeContainer, cakeAnimatedStyle]}>
-        <View style={styles.cakeEmoji}>
-          {/* Cake illustration using views */}
-          <View style={styles.cakeTop}>
-            <View style={styles.cherry} />
-            <View style={styles.candle}>
-              <View style={styles.flame} />
-            </View>
-          </View>
+        {/* Steam */}
+        <Animated.View style={[styles.steamContainer, steamStyle]}>
+          <View style={styles.steam1} />
+          <View style={styles.steam2} />
+          <View style={styles.steam3} />
+        </Animated.View>
+        
+        {/* Cake */}
+        <View style={styles.cakeIllustration}>
           <View style={styles.cakeFrosting}>
             <View style={styles.frostingDrip1} />
             <View style={styles.frostingDrip2} />
@@ -161,29 +113,36 @@ export default function HomeScreen() {
           </View>
           <View style={styles.cakeLayer1} />
           <View style={styles.cakeLayer2} />
-          <View style={styles.cakeLayer3} />
           <View style={styles.cakePlate} />
         </View>
       </Animated.View>
+
+      {/* Features */}
+      <View style={styles.featuresContainer}>
+        <View style={styles.featureItem}>
+          <Ionicons name="options-outline" size={20} color="#8B7355" />
+          <Text style={styles.featureText}>Customize every layer</Text>
+        </View>
+        <View style={styles.featureItem}>
+          <Ionicons name="document-text-outline" size={20} color="#8B7355" />
+          <Text style={styles.featureText}>Get precise recipes</Text>
+        </View>
+      </View>
 
       {/* Start Button */}
       <Animated.View style={[styles.buttonContainer, buttonAnimatedStyle]}>
         <TouchableOpacity
           style={styles.startButton}
           onPress={handleStartBaking}
-          activeOpacity={0.8}
+          activeOpacity={0.85}
         >
-          <Ionicons name="restaurant" size={28} color="#FFF" style={styles.buttonIcon} />
-          <Text style={styles.startButtonText}>Start Baking!</Text>
+          <Text style={styles.startButtonText}>Start Building</Text>
+          <Ionicons name="arrow-forward" size={22} color="#FFF" />
         </TouchableOpacity>
       </Animated.View>
 
-      {/* Footer decoration */}
-      <View style={styles.footer}>
-        <View style={styles.footerDot} />
-        <View style={styles.footerDot} />
-        <View style={styles.footerDot} />
-      </View>
+      {/* Footer */}
+      <Text style={styles.footerText}>Cakes • Brownies • Cheesecakes</Text>
     </View>
   );
 }
@@ -191,205 +150,202 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF5E4',
+    backgroundColor: '#FAF7F2',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
   },
-  bgDecoration1: {
+  bgCircle1: {
     position: 'absolute',
-    top: -100,
-    right: -100,
-    width: 300,
-    height: 300,
-    borderRadius: 150,
-    backgroundColor: '#FFE5EC',
+    top: -80,
+    right: -60,
+    width: 220,
+    height: 220,
+    borderRadius: 110,
+    backgroundColor: '#F5EEE6',
   },
-  bgDecoration2: {
+  bgCircle2: {
     position: 'absolute',
-    bottom: -50,
-    left: -80,
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    backgroundColor: '#E8F6F3',
-  },
-  bgDecoration3: {
-    position: 'absolute',
-    top: height * 0.4,
-    left: -30,
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#FFF0D4',
-  },
-  sparkle: {
-    position: 'absolute',
-  },
-  sparkle1: {
-    top: height * 0.15,
-    right: 40,
-  },
-  sparkle2: {
-    top: height * 0.25,
-    left: 30,
-  },
-  sparkle3: {
-    bottom: height * 0.25,
-    right: 50,
+    bottom: -40,
+    left: -50,
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    backgroundColor: '#F0E8DE',
   },
   titleContainer: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
   },
   titleTop: {
-    fontSize: 28,
-    fontWeight: '600',
-    color: '#8B5A2B',
-    letterSpacing: 2,
+    fontSize: 24,
+    fontWeight: '500',
+    color: '#6B5B4F',
+    letterSpacing: 3,
+    textTransform: 'uppercase',
   },
   titleMain: {
-    fontSize: 64,
-    fontWeight: '900',
-    color: '#E85A4F',
-    letterSpacing: 4,
-    textShadowColor: 'rgba(0, 0, 0, 0.1)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 4,
+    fontSize: 56,
+    fontWeight: '700',
+    color: '#C4704F',
+    letterSpacing: 2,
+    marginTop: -4,
+  },
+  subtitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+    gap: 12,
+  },
+  subtitleLine: {
+    width: 40,
+    height: 1,
+    backgroundColor: '#D4C4B5',
   },
   subtitle: {
-    fontSize: 16,
-    color: '#A0785C',
-    marginTop: 8,
+    fontSize: 14,
+    color: '#8B7355',
     fontWeight: '500',
+    letterSpacing: 1,
   },
   cakeContainer: {
-    marginVertical: 30,
-  },
-  cakeEmoji: {
+    marginVertical: 32,
     alignItems: 'center',
   },
-  cakeTop: {
+  steamContainer: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    marginBottom: -5,
-    zIndex: 10,
+    justifyContent: 'center',
+    gap: 8,
+    marginBottom: 8,
   },
-  cherry: {
-    width: 20,
+  steam1: {
+    width: 3,
     height: 20,
-    borderRadius: 10,
-    backgroundColor: '#E53E3E',
-    marginRight: 10,
+    backgroundColor: '#D4C4B5',
+    borderRadius: 2,
   },
-  candle: {
-    width: 8,
-    height: 35,
-    backgroundColor: '#FFD93D',
-    borderRadius: 4,
+  steam2: {
+    width: 3,
+    height: 28,
+    backgroundColor: '#D4C4B5',
+    borderRadius: 2,
+    marginTop: -8,
+  },
+  steam3: {
+    width: 3,
+    height: 16,
+    backgroundColor: '#D4C4B5',
+    borderRadius: 2,
+  },
+  cakeIllustration: {
     alignItems: 'center',
-  },
-  flame: {
-    width: 12,
-    height: 18,
-    backgroundColor: '#FF6B35',
-    borderRadius: 6,
-    marginTop: -10,
   },
   cakeFrosting: {
-    width: 160,
-    height: 25,
-    backgroundColor: '#FAFAFA',
+    width: 140,
+    height: 24,
+    backgroundColor: '#F5F0EB',
     borderRadius: 12,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'flex-end',
     zIndex: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 2,
   },
   frostingDrip1: {
-    width: 15,
-    height: 20,
-    backgroundColor: '#FAFAFA',
-    borderBottomLeftRadius: 8,
-    borderBottomRightRadius: 8,
-  },
-  frostingDrip2: {
     width: 12,
-    height: 28,
-    backgroundColor: '#FAFAFA',
+    height: 16,
+    backgroundColor: '#F5F0EB',
     borderBottomLeftRadius: 6,
     borderBottomRightRadius: 6,
   },
+  frostingDrip2: {
+    width: 10,
+    height: 22,
+    backgroundColor: '#F5F0EB',
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+  },
   frostingDrip3: {
-    width: 15,
-    height: 18,
-    backgroundColor: '#FAFAFA',
-    borderBottomLeftRadius: 8,
-    borderBottomRightRadius: 8,
+    width: 12,
+    height: 14,
+    backgroundColor: '#F5F0EB',
+    borderBottomLeftRadius: 6,
+    borderBottomRightRadius: 6,
   },
   cakeLayer1: {
-    width: 150,
-    height: 45,
-    backgroundColor: '#F8B4B4',
-    borderRadius: 8,
-    marginTop: -5,
-  },
-  cakeLayer2: {
-    width: 160,
-    height: 45,
+    width: 130,
+    height: 50,
     backgroundColor: '#D4A574',
     borderRadius: 8,
-    marginTop: 2,
+    marginTop: -4,
   },
-  cakeLayer3: {
-    width: 170,
-    height: 45,
-    backgroundColor: '#B87333',
+  cakeLayer2: {
+    width: 140,
+    height: 50,
+    backgroundColor: '#C4956A',
     borderRadius: 8,
     marginTop: 2,
   },
   cakePlate: {
-    width: 200,
-    height: 15,
-    backgroundColor: '#DDD',
-    borderRadius: 8,
-    marginTop: 5,
+    width: 170,
+    height: 12,
+    backgroundColor: '#E8E0D8',
+    borderRadius: 6,
+    marginTop: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  buttonContainer: {
-    marginTop: 20,
+  featuresContainer: {
+    flexDirection: 'row',
+    gap: 24,
+    marginBottom: 32,
   },
-  startButton: {
-    backgroundColor: '#E85A4F',
-    paddingHorizontal: 40,
-    paddingVertical: 18,
-    borderRadius: 30,
+  featureItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: '#E85A4F',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.4,
-    shadowRadius: 15,
-    elevation: 8,
+    gap: 6,
   },
-  buttonIcon: {
-    marginRight: 10,
+  featureText: {
+    fontSize: 13,
+    color: '#8B7355',
+    fontWeight: '500',
+  },
+  buttonContainer: {
+    width: '100%',
+  },
+  startButton: {
+    backgroundColor: '#C4704F',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 18,
+    borderRadius: 16,
+    shadowColor: '#C4704F',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    elevation: 8,
+    gap: 10,
   },
   startButtonText: {
     color: '#FFF',
-    fontSize: 22,
-    fontWeight: '700',
-    letterSpacing: 1,
+    fontSize: 18,
+    fontWeight: '600',
+    letterSpacing: 0.5,
   },
-  footer: {
+  footerText: {
     position: 'absolute',
     bottom: 40,
-    flexDirection: 'row',
-    gap: 8,
-  },
-  footerDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#DDD',
+    fontSize: 13,
+    color: '#B8A89A',
+    fontWeight: '500',
+    letterSpacing: 1,
   },
 });
