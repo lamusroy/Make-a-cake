@@ -169,6 +169,46 @@ const generateRecipe = (cake: any) => {
         'Cool completely before frosting.',
       ].filter(Boolean),
     },
+    'Brownie': {
+      base: `1 cup butter, 2 cups sugar, 4 eggs, 1 cup cocoa powder, 1 cup flour, ½ tsp salt, 1 tsp vanilla${cake.mixIns.length > 0 ? ', plus your mix-ins' : ''}`,
+      instructions: [
+        'Preheat oven to 350°F (175°C). Line a 9x13" pan with parchment paper.',
+        'Melt butter and mix with sugar.',
+        'Add eggs one at a time, then vanilla.',
+        'Fold in cocoa powder, flour, and salt until just combined.',
+        cake.mixIns.length > 0 ? `Fold in your mix-ins: ${cake.mixIns.map((id: string) => mixInOptions.find(m => m.id === id)?.name).join(', ')}.` : '',
+        cake.sweetness > 50 ? 'For extra fudgy brownies, slightly underbake.' : '',
+        'Pour into prepared pan and bake for 25-30 minutes.',
+        'Cool completely before cutting into squares.',
+      ].filter(Boolean),
+    },
+    'Cheesecake': {
+      base: `For crust: 2 cups crushed ${cake.crust || 'graham crackers'}, ½ cup melted butter, ¼ cup sugar. For filling: 32 oz cream cheese, 1 cup sugar, 4 eggs, 1 cup sour cream, 2 tsp vanilla`,
+      instructions: [
+        'Preheat oven to 325°F (160°C). Wrap springform pan bottom with foil.',
+        `Make crust: Mix crushed ${cake.crust || 'graham crackers'} with melted butter and sugar.`,
+        'Press crust mixture firmly into bottom of pan. Bake 10 minutes.',
+        'Beat cream cheese until smooth. Add sugar gradually.',
+        'Add eggs one at a time on low speed.',
+        'Mix in sour cream and vanilla.',
+        'Pour over crust. Place pan in water bath.',
+        'Bake 55-65 minutes until center barely jiggles.',
+        'Turn off oven, crack door, leave cheesecake inside 1 hour.',
+        'Refrigerate at least 4 hours or overnight before serving.',
+      ],
+    },
+  };
+
+  // Mix-in instructions for brownies
+  const mixInInstructions: any = {
+    'walnuts': 'Fold in 1 cup chopped walnuts for classic nutty brownies.',
+    'pecans': 'Add 1 cup chopped pecans for Southern-style brownies.',
+    'chocolate-chips': 'Mix in 1 cup chocolate chips for extra chocolate pockets.',
+    'white-chocolate': 'Swirl in 1 cup white chocolate chips for contrast.',
+    'peanut-butter': 'Dollop ½ cup peanut butter on top and swirl with a knife.',
+    'dried-cranberries': 'Fold in ¾ cup dried cranberries for tartness.',
+    'dried-cherries': 'Add ¾ cup dried cherries for a cherry-chocolate combo.',
+    'espresso': 'Dissolve 2 tsp instant espresso in the melted butter to intensify chocolate flavor.',
   };
 
   const frostings: any = {
