@@ -564,6 +564,45 @@ const styles = StyleSheet.create({
     color: '#5D4037',
     lineHeight: 24,
   },
+  fineTuningCard: {
+    backgroundColor: '#F9F5FF',
+    borderWidth: 2,
+    borderColor: '#E1BEE7',
+  },
+  fineTuningBadges: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 12,
+  },
+  fineTuningBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    gap: 6,
+  },
+  fineTuningBadgeText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#8B5A2B',
+  },
+  fineTuningTips: {
+    gap: 8,
+  },
+  fineTuningTipRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+  },
+  fineTuningTipText: {
+    flex: 1,
+    fontSize: 13,
+    color: '#5D4037',
+    lineHeight: 18,
+  },
   bottomBar: {
     position: 'absolute',
     bottom: 0,
