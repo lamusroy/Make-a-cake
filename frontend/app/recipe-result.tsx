@@ -67,10 +67,32 @@ const getRiseAdjustment = (value: number) => {
   return 'Standard leavening';
 };
 
+// Size info for display
+const getSizeInfo = (cakeSize: string | null) => {
+  const sizes: any = {
+    'small': { name: 'Small', servings: '6-8', volume: '4 cups batter' },
+    'medium': { name: 'Medium', servings: '10-14', volume: '6 cups batter' },
+    'large': { name: 'Large', servings: '16-20', volume: '8 cups batter' },
+    'party': { name: 'Party Size', servings: '24-30', volume: '12 cups batter' },
+  };
+  return sizes[cakeSize || 'medium'] || sizes['medium'];
+};
+
 // Recipe generator based on selections
 const generateRecipe = (cake: any) => {
   const fatInfo = getFatTypeText(cake.fatType);
   const fluffInfo = getFluffinessText(cake.fluffiness);
+  const sizeInfo = getSizeInfo(cake.cakeSize);
+  const multiplier = cake.sizeMultiplier || 1;
+  
+  // Scale ingredients based on size
+  const scaleAmount = (base: string, mult: number) => {
+    if (mult === 1) return base;
+    if (mult === 0.75) return base.replace(/2½/g, '2').replace(/2/g, '1½').replace(/1 cup/g, '¾ cup').replace(/4 eggs/g, '3 eggs').replace(/3 tsp/g, '2 tsp');
+    if (mult === 1.5) return base.replace(/2½/g, '3¾').replace(/2 cups/g, '3 cups').replace(/1 cup/g, '1½ cups').replace(/4 eggs/g, '6 eggs').replace(/3 tsp/g, '4½ tsp');
+    if (mult === 2) return base.replace(/2½/g, '5').replace(/2 cups/g, '4 cups').replace(/1 cup/g, '2 cups').replace(/4 eggs/g, '8 eggs').replace(/3 tsp/g, '6 tsp');
+    return base;
+  };
   
   const recipes: any = {
     // Base recipes for different flavors
