@@ -17,7 +17,7 @@ export default function RootLayout() {
         >
           <Stack.Screen name="index" />
           <Stack.Screen name="step1-flavor" />
-          <Stack.Screen name="step2-layers" />
+          <Stack.Screen name="step2-size" />
           <Stack.Screen name="step3-frosting" />
           <Stack.Screen name="step4-filling" />
           <Stack.Screen name="step5-decorations" />
