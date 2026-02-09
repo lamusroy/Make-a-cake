@@ -7,23 +7,24 @@ interface CakePreviewProps {
   size?: 'small' | 'medium' | 'large';
 }
 
+// Map cake size to visual representation
+const getSizeVisual = (cakeSize: string | null) => {
+  switch (cakeSize) {
+    case 'small': return { width: 100, height: 50 };
+    case 'medium': return { width: 130, height: 60 };
+    case 'large': return { width: 150, height: 70 };
+    case 'party': return { width: 180, height: 80 };
+    default: return { width: 130, height: 60 };
+  }
+};
+
 export const CakePreview: React.FC<CakePreviewProps> = ({ size = 'medium' }) => {
   const cake = useCakeStore((state) => state.cake);
   
   const scale = size === 'small' ? 0.5 : size === 'large' ? 1.2 : 1;
-  const baseWidth = 150 * scale;
-  
-  const getLayerStyle = (index: number) => {
-    const layerWidth = baseWidth + (index * 10 * scale);
-    const layerHeight = 40 * scale;
-    return {
-      width: layerWidth,
-      height: layerHeight,
-      backgroundColor: cake.flavorColor || '#D4A574',
-      borderRadius: 8 * scale,
-      marginTop: index > 0 ? 2 * scale : -5 * scale,
-    };
-  };
+  const cakeDimensions = getSizeVisual(cake.cakeSize);
+  const baseWidth = cakeDimensions.width * scale;
+  const baseHeight = cakeDimensions.height * scale;
   
   const renderDecorations = () => {
     return cake.decorations.map((decId, index) => {
@@ -100,29 +101,32 @@ export const CakePreview: React.FC<CakePreviewProps> = ({ size = 'medium' }) => 
         ]} />
       </View>
       
-      {/* Cake Layers */}
-      {Array.from({ length: cake.layers }).map((_, index) => (
-        <View key={index}>
-          <View style={getLayerStyle(index)} />
-          {/* Filling between layers */}
-          {index < cake.layers - 1 && (
-            <View style={[
-              styles.filling,
-              {
-                width: baseWidth + (index * 10 * scale) + (5 * scale),
-                height: 6 * scale,
-                backgroundColor: cake.fillingColor || '#F8B4B4',
-              }
-            ]} />
-          )}
-        </View>
-      ))}
+      {/* Main Cake Body */}
+      <View style={[
+        styles.cakeBody,
+        {
+          width: baseWidth,
+          height: baseHeight,
+          backgroundColor: cake.flavorColor || '#D4A574',
+        }
+      ]}>
+        {/* Filling stripe */}
+        {cake.fillingColor && (
+          <View style={[
+            styles.fillingStripe,
+            {
+              backgroundColor: cake.fillingColor,
+              top: baseHeight * 0.45,
+            }
+          ]} />
+        )}
+      </View>
       
       {/* Plate */}
       <View style={[
         styles.plate, 
         { 
-          width: baseWidth + (cake.layers * 15 * scale), 
+          width: baseWidth + 30 * scale, 
           height: 12 * scale 
         }
       ]} />
@@ -171,11 +175,16 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 6,
     borderBottomRightRadius: 6,
   },
-  filling: {
-    borderRadius: 3,
-    alignSelf: 'center',
-    marginTop: 1,
-    marginBottom: 1,
+  cakeBody: {
+    borderRadius: 8,
+    marginTop: -5,
+    overflow: 'hidden',
+  },
+  fillingStripe: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    height: 6,
   },
   plate: {
     backgroundColor: '#E0E0E0',
