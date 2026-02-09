@@ -156,11 +156,25 @@ export default function Step6FineTune() {
   const richnessIsExtra = cake.richness > 50;
   const riseIsHigh = cake.riseIntensity > 50;
 
+  // Calculate step number based on dessert type
+  const getStepInfo = () => {
+    if (cake.dessertType === 'brownie') return { step: 4, total: 4 };
+    if (cake.dessertType === 'cheesecake') return { step: 5, total: 5 };
+    return { step: 6, total: 6 };
+  };
+  const stepInfo = getStepInfo();
+
+  const getTitle = () => {
+    if (cake.dessertType === 'brownie') return 'Fine-Tune Your Brownie';
+    if (cake.dessertType === 'cheesecake') return 'Fine-Tune Your Cheesecake';
+    return 'Fine-Tune Your Cake';
+  };
+
   return (
     <StepLayout
-      step={6}
-      totalSteps={6}
-      title="Fine-Tune Your Cake"
+      step={stepInfo.step}
+      totalSteps={stepInfo.total}
+      title={getTitle()}
       subtitle="Adjust the texture and taste"
       onNext={handleNext}
       nextLabel="Get Recipe!"
