@@ -172,21 +172,36 @@ const generateRecipe = (cake: any) => {
   };
 
   const frostings: any = {
+    'None (Plain)': null,
     'Buttercream': '1 cup softened butter, 4 cups powdered sugar, 2-4 tbsp milk, 2 tsp vanilla. Beat butter, add sugar gradually, then milk and vanilla until fluffy.',
     'Cream Cheese': '8 oz cream cheese, ½ cup butter, 4 cups powdered sugar, 1 tsp vanilla. Beat cream cheese and butter, add sugar and vanilla.',
     'Chocolate Ganache': '12 oz chocolate chips, 1 cup heavy cream. Heat cream, pour over chocolate, stir until smooth. Cool before pouring.',
     'Whipped Cream': '2 cups heavy whipping cream, ¼ cup powdered sugar, 1 tsp vanilla. Whip cream until stiff peaks form.',
-    'Fondant': 'Store-bought fondant or: 1 bag marshmallows, 2 lb powdered sugar, water. Melt marshmallows, knead in sugar.',
+    'Zesty Glaze': '2 cups powdered sugar, 3-4 tbsp fresh lemon or orange juice, 1 tsp zest. Mix until smooth and pourable. Drizzle over cooled cake. Perfect for citrus cakes!',
     'Caramel': '1 cup sugar, 6 tbsp butter, ½ cup heavy cream. Cook sugar until amber, add butter and cream.',
+    'Fondant': 'Store-bought fondant or: 1 bag marshmallows, 2 lb powdered sugar, water. Melt marshmallows, knead in sugar.',
   };
 
   const fillings: any = {
+    'None (Plain)': null,
     'Strawberry Jam': 'Spread 1 cup strawberry preserves between layers.',
     'Chocolate Mousse': 'Beat 2 cups heavy cream with 1 cup melted chocolate until thick.',
     'Lemon Curd': 'Cook ½ cup lemon juice, ¾ cup sugar, 3 eggs, 6 tbsp butter until thick.',
     'Fresh Berries': 'Layer fresh mixed berries between cake layers with whipped cream.',
     'Vanilla Custard': 'Make pastry cream: 2 cups milk, ½ cup sugar, 4 egg yolks, 3 tbsp cornstarch, 2 tsp vanilla.',
     'Caramel': 'Use store-bought or homemade caramel sauce between layers.',
+  };
+
+  const toppings: any = {
+    'powdered-sugar': 'Dust generously with powdered sugar through a fine sieve for an elegant finish.',
+    'sprinkles': 'Add colorful sprinkles while frosting is still soft.',
+    'chocolate-chips': 'Press chocolate chips into frosting or sprinkle on top.',
+    'fresh-fruits': 'Arrange fresh berries, sliced strawberries, or kiwi on top.',
+    'edible-flowers': 'Decorate with food-safe flowers like pansies, violets, or roses.',
+    'nuts': 'Toast chopped walnuts, pecans, or almonds and press onto sides.',
+    'caramel-drizzle': 'Drizzle warm caramel sauce in decorative patterns.',
+    'whipped-cream-dollops': 'Pipe rosettes of whipped cream around the top edge.',
+    'candles': 'Add birthday candles for celebration!',
   };
 
   // Build fine-tuning tips
