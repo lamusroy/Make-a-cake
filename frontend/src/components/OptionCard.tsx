@@ -34,7 +34,7 @@ export const OptionCard: React.FC<OptionCardProps> = ({
   }));
 
   const handlePress = () => {
-    scale.value = withSpring(0.95, {}, () => {
+    scale.value = withSpring(0.97, {}, () => {
       scale.value = withSpring(1);
     });
     onSelect(id, color);
@@ -43,30 +43,27 @@ export const OptionCard: React.FC<OptionCardProps> = ({
   return (
     <Animated.View style={animatedStyle}>
       <TouchableOpacity
-        style={[
-          styles.card,
-          selected && styles.cardSelected,
-        ]}
+        style={[styles.card, selected && styles.cardSelected]}
         onPress={handlePress}
-        activeOpacity={0.8}
+        activeOpacity={0.85}
       >
         <View 
           style={[
             styles.iconContainer, 
-            { backgroundColor: color || '#FFF' },
+            { backgroundColor: color || '#F5EEE6' },
             selected && styles.iconContainerSelected,
           ]}
         >
           <Ionicons 
             name={icon as any} 
-            size={32} 
-            color={color && isLightColor(color) ? '#8B5A2B' : '#FFF'} 
+            size={28} 
+            color={color && isLightColor(color) ? '#6B5B4F' : '#FFF'} 
           />
         </View>
         <Text style={[styles.name, selected && styles.nameSelected]}>{name}</Text>
         {selected && (
           <View style={styles.checkmark}>
-            <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
+            <Ionicons name="checkmark-circle" size={22} color="#7CB07F" />
           </View>
         )}
       </TouchableOpacity>
@@ -88,53 +85,50 @@ const styles = StyleSheet.create({
   card: {
     width: CARD_WIDTH,
     backgroundColor: '#FFF',
-    borderRadius: 20,
+    borderRadius: 16,
     padding: 16,
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 14,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 4,
-    borderWidth: 3,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 3,
+    borderWidth: 2,
     borderColor: 'transparent',
   },
   cardSelected: {
-    borderColor: '#E85A4F',
-    backgroundColor: '#FFF8F7',
+    borderColor: '#C4704F',
+    backgroundColor: '#FDF9F6',
   },
   iconContainer: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
+    width: 64,
+    height: 64,
+    borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 3,
   },
   iconContainerSelected: {
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 6,
+    elevation: 4,
   },
   name: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '600',
-    color: '#8B5A2B',
+    color: '#6B5B4F',
     textAlign: 'center',
   },
   nameSelected: {
-    color: '#E85A4F',
+    color: '#C4704F',
     fontWeight: '700',
   },
   checkmark: {
     position: 'absolute',
-    top: 8,
-    right: 8,
+    top: 10,
+    right: 10,
   },
 });
