@@ -294,9 +294,9 @@ export default function Step6FineTune() {
         
         {/* Summary Card */}
         <View style={styles.summaryCard}>
-          <Ionicons name="restaurant" size={24} color="#E85A4F" />
+          <Ionicons name="restaurant" size={24} color="#C4704F" />
           <View style={styles.summaryContent}>
-            <Text style={styles.summaryTitle}>Your Cake Style</Text>
+            <Text style={styles.summaryTitle}>Your Style</Text>
             <Text style={styles.summaryText}>
               {fatTypeIsOil ? 'Oil-based' : 'Butter-based'} • {' '}
               {fluffinessIsWhipped ? 'Light & Airy' : 'Dense & Fudgy'} • {' '}
