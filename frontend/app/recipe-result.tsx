@@ -302,30 +302,68 @@ export default function RecipeResult() {
   const handleShare = async () => {
     if (!recipe) return;
     
-    const recipeText = `
-🎂 My Custom ${cake.flavor} Cake Recipe 🎂
+    // Format ingredients as a list
+    const formatIngredients = (ingredientsStr: string) => {
+      return ingredientsStr
+        .split(', ')
+        .map(ing => `• ${ing.trim()}`)
+        .join('\n');
+    };
 
-📋 INGREDIENTS:
-${recipe.base.base}
+    // Get dessert type emoji and name
+    const getDessertInfo = () => {
+      if (cake.dessertType === 'brownie') return { emoji: '🍫', name: 'Brownie' };
+      if (cake.dessertType === 'cheesecake') return { emoji: '🧀', name: 'Cheesecake' };
+      return { emoji: '🎂', name: 'Cake' };
+    };
+    const dessertInfo = getDessertInfo();
 
-🧁 FROSTING (${cake.frosting}):
-${recipe.frosting}
-
-🍰 FILLING (${cake.filling}):
-${recipe.filling}
-
-📝 INSTRUCTIONS:
-${recipe.base.instructions.map((step: string, i: number) => `${i + 1}. ${step}`).join('\n')}
-
-🎨 Decorations: ${recipe.decorations.length > 0 ? recipe.decorations.join(', ') : 'None'}
-
-Made with Make a Cake app! 🍰
-    `;
+    // Build recipe text dynamically, skipping null sections
+    let recipeText = `${dessertInfo.emoji} My ${cake.flavor} ${dessertInfo.name} Recipe ${dessertInfo.emoji}\n\n`;
+    recipeText += `📊 Size: ${recipe.sizeInfo.name} (${recipe.sizeInfo.servings} servings)\n\n`;
+    
+    // Ingredients
+    recipeText += `📋 INGREDIENTS:\n${formatIngredients(recipe.base.base)}\n\n`;
+    
+    // Instructions
+    recipeText += `📝 INSTRUCTIONS:\n${recipe.base.instructions.map((step: string, i: number) => `${i + 1}. ${step}`).join('\n')}\n`;
+    
+    // Frosting (only if exists and not "None")
+    if (recipe.frosting && cake.frosting && !cake.frosting.includes('None')) {
+      recipeText += `\n🧁 FROSTING - ${cake.frosting}:\n${recipe.frosting}\n`;
+    }
+    
+    // Filling (only if exists and not "None")
+    if (recipe.filling && cake.filling && !cake.filling.includes('None')) {
+      recipeText += `\n🍰 FILLING - ${cake.filling}:\n${recipe.filling}\n`;
+    }
+    
+    // Crust for cheesecake
+    if (recipe.crust && cake.dessertType === 'cheesecake') {
+      recipeText += `\n🥧 CRUST: ${recipe.crust}\n`;
+    }
+    
+    // Mix-ins for brownies
+    if (recipe.mixIns && recipe.mixIns.length > 0) {
+      recipeText += `\n🍫 MIX-INS:\n${recipe.mixIns.map((m: string) => `• ${m}`).join('\n')}\n`;
+    }
+    
+    // Toppings (only if any selected)
+    if (recipe.decorations && recipe.decorations.length > 0) {
+      recipeText += `\n✨ TOPPINGS: ${recipe.decorations.join(', ')}\n`;
+    }
+    
+    // Fine-tuning tips (only if any)
+    if (recipe.fineTuning && recipe.fineTuning.tips && recipe.fineTuning.tips.length > 0) {
+      recipeText += `\n💡 TIPS:\n${recipe.fineTuning.tips.map((t: string) => `• ${t}`).join('\n')}\n`;
+    }
+    
+    recipeText += `\nMade with Make a Cake app!`;
     
     try {
       await Share.share({
         message: recipeText,
-        title: `My ${cake.flavor} Cake Recipe`,
+        title: `My ${cake.flavor} ${dessertInfo.name} Recipe`,
       });
     } catch (error) {
       console.log(error);
