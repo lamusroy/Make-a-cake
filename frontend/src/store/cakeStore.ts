@@ -87,6 +87,18 @@ export const useCakeStore = create<CakeStore>((set) => ({
         : [...current, decoration];
       return { cake: { ...state.cake, decorations: newDecorations } };
     }),
+  setMixIns: (mixIns) =>
+    set((state) => ({ cake: { ...state.cake, mixIns } })),
+  toggleMixIn: (mixIn) =>
+    set((state) => {
+      const current = state.cake.mixIns;
+      const newMixIns = current.includes(mixIn)
+        ? current.filter((m) => m !== mixIn)
+        : [...current, mixIn];
+      return { cake: { ...state.cake, mixIns: newMixIns } };
+    }),
+  setCrust: (crust, color) =>
+    set((state) => ({ cake: { ...state.cake, crust, crustColor: color } })),
   setFatType: (fatType) =>
     set((state) => ({ cake: { ...state.cake, fatType } })),
   setFluffiness: (fluffiness) =>
