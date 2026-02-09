@@ -203,11 +203,11 @@ const generateRecipe = (cake: any) => {
     base: recipes[cake.flavor || 'Vanilla'],
     frosting: frostings[cake.frosting || 'Buttercream'],
     filling: fillings[cake.filling || 'Strawberry Jam'],
-    layers: cake.layers,
+    sizeInfo: sizeInfo,
     decorations: cake.decorations.map((id: string) => decorationOptions.find(d => d.id === id)?.name).filter(Boolean),
     fineTuning: {
       fatType: fatInfo.name,
-      fluffiness: cake.fluffiness > 66 ? 'Extra Fluffy (whipped whites)' : cake.fluffiness < 33 ? 'Dense' : 'Classic',
+      fluffiness: cake.fluffiness > 50 ? 'Extra Fluffy (whipped whites)' : 'Dense (whole eggs)',
       tips: fineTuningTips,
     },
   };
