@@ -370,12 +370,7 @@ export default function RecipeResult() {
     
     // Toppings (only if any selected)
     if (recipe.decorations && recipe.decorations.length > 0) {
-      recipeText += `\nTOPPINGS\n${recipe.decorations.map((d: string) => `• ${d}`).join('\n')}\n`;
-    }
-    
-    // Tips (only if any)
-    if (recipe.fineTuning && recipe.fineTuning.tips && recipe.fineTuning.tips.length > 0) {
-      recipeText += `\nTIPS\n${recipe.fineTuning.tips.map((t: string) => `• ${t}`).join('\n')}`;
+      recipeText += `\nTOPPINGS\n${recipe.decorations.map((d: string) => `• ${d}`).join('\n')}`;
     }
     
     try {
