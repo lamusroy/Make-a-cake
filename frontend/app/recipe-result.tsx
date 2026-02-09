@@ -217,9 +217,10 @@ const generateRecipe = (cake: any) => {
   return {
     base: recipes[cake.flavor || 'Vanilla'],
     frosting: frostings[cake.frosting || 'Buttercream'],
-    filling: fillings[cake.filling || 'Strawberry Jam'],
+    filling: fillings[cake.filling || 'None (Plain)'],
     sizeInfo: sizeInfo,
     decorations: cake.decorations.map((id: string) => decorationOptions.find(d => d.id === id)?.name).filter(Boolean),
+    toppingInstructions: cake.decorations.map((id: string) => toppings[id]).filter(Boolean),
     fineTuning: {
       fatType: fatInfo.name,
       fluffiness: cake.fluffiness > 50 ? 'Extra Fluffy (whipped whites)' : 'Dense (whole eggs)',
