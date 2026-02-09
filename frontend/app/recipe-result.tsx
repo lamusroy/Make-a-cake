@@ -384,10 +384,10 @@ export default function RecipeResult() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#8B5A2B" />
+          <Ionicons name="chevron-back" size={24} color="#6B5B4F" />
         </TouchableOpacity>
         <TouchableOpacity onPress={handleShare} style={styles.shareButton}>
-          <Ionicons name="share-outline" size={24} color="#FFF" />
+          <Ionicons name="share-outline" size={22} color="#FFF" />
         </TouchableOpacity>
       </View>
       
