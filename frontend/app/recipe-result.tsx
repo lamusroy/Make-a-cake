@@ -353,32 +353,36 @@ Made with Make a Cake app! 🍰
           </View>
         </Animated.View>
         
-        <Animated.View entering={FadeInDown.delay(600).duration(500)}>
-          <View style={styles.recipeCard}>
-            <View style={styles.cardHeader}>
-              <Ionicons name="color-palette" size={24} color="#E85A4F" />
-              <Text style={styles.cardTitle}>Frosting - {cake.frosting}</Text>
+        {recipe.frosting && (
+          <Animated.View entering={FadeInDown.delay(600).duration(500)}>
+            <View style={styles.recipeCard}>
+              <View style={styles.cardHeader}>
+                <Ionicons name="color-palette" size={24} color="#E85A4F" />
+                <Text style={styles.cardTitle}>Frosting - {cake.frosting}</Text>
+              </View>
+              <Text style={styles.cardContent}>{recipe.frosting}</Text>
             </View>
-            <Text style={styles.cardContent}>{recipe.frosting}</Text>
-          </View>
-        </Animated.View>
+          </Animated.View>
+        )}
         
-        <Animated.View entering={FadeInDown.delay(700).duration(500)}>
-          <View style={styles.recipeCard}>
-            <View style={styles.cardHeader}>
-              <Ionicons name="layers" size={24} color="#E85A4F" />
-              <Text style={styles.cardTitle}>Filling - {cake.filling}</Text>
+        {recipe.filling && (
+          <Animated.View entering={FadeInDown.delay(700).duration(500)}>
+            <View style={styles.recipeCard}>
+              <View style={styles.cardHeader}>
+                <Ionicons name="layers" size={24} color="#E85A4F" />
+                <Text style={styles.cardTitle}>Filling - {cake.filling}</Text>
+              </View>
+              <Text style={styles.cardContent}>{recipe.filling}</Text>
             </View>
-            <Text style={styles.cardContent}>{recipe.filling}</Text>
-          </View>
-        </Animated.View>
+          </Animated.View>
+        )}
         
         {recipe.decorations.length > 0 && (
           <Animated.View entering={FadeInDown.delay(800).duration(500)}>
             <View style={styles.recipeCard}>
               <View style={styles.cardHeader}>
                 <Ionicons name="sparkles" size={24} color="#E85A4F" />
-                <Text style={styles.cardTitle}>Decorations</Text>
+                <Text style={styles.cardTitle}>Toppings</Text>
               </View>
               <View style={styles.decorationsList}>
                 {recipe.decorations.map((dec: string, index: number) => (
@@ -387,6 +391,16 @@ Made with Make a Cake app! 🍰
                   </View>
                 ))}
               </View>
+              {recipe.toppingInstructions && recipe.toppingInstructions.length > 0 && (
+                <View style={styles.toppingInstructions}>
+                  {recipe.toppingInstructions.map((instruction: string, index: number) => (
+                    <View key={index} style={styles.toppingInstructionRow}>
+                      <Ionicons name="checkmark-circle" size={16} color="#4CAF50" />
+                      <Text style={styles.toppingInstructionText}>{instruction}</Text>
+                    </View>
+                  ))}
+                </View>
+              )}
             </View>
           </Animated.View>
         )}
