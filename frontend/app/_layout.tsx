@@ -22,6 +22,8 @@ export default function RootLayout() {
           <Stack.Screen name="step4-filling" />
           <Stack.Screen name="step5-decorations" />
           <Stack.Screen name="step6-finetune" />
+          <Stack.Screen name="step-brownie-mixins" />
+          <Stack.Screen name="step-cheesecake-crust" />
           <Stack.Screen name="recipe-result" />
         </Stack>
       </SafeAreaProvider>
