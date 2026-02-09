@@ -3,14 +3,15 @@ import { create } from 'zustand';
 export interface CakeConfig {
   flavor: string | null;
   flavorColor: string | null;
-  layers: number;
+  cakeSize: string | null; // 'small' | 'medium' | 'large' | 'party'
+  sizeMultiplier: number; // Recipe multiplier based on size
   frosting: string | null;
   frostingColor: string | null;
   filling: string | null;
   fillingColor: string | null;
   decorations: string[];
   // Fine-tuning options
-  fatType: number; // 0 = Butter, 50 = Lard, 100 = Oil
+  fatType: number; // 0 = Butter, 100 = Oil
   fluffiness: number; // 0 = Whole eggs (dense), 100 = Whipped whites (fluffy)
   sweetness: number; // 0 = Less sweet, 100 = Extra sweet
   richness: number; // 0 = Standard, 100 = Extra yolks
@@ -21,7 +22,7 @@ export interface CakeConfig {
 interface CakeStore {
   cake: CakeConfig;
   setFlavor: (flavor: string, color: string) => void;
-  setLayers: (layers: number) => void;
+  setCakeSize: (size: string, multiplier: number) => void;
   setFrosting: (frosting: string, color: string) => void;
   setFilling: (filling: string, color: string) => void;
   setDecorations: (decorations: string[]) => void;
@@ -38,16 +39,17 @@ interface CakeStore {
 const initialCake: CakeConfig = {
   flavor: null,
   flavorColor: null,
-  layers: 2,
+  cakeSize: null,
+  sizeMultiplier: 1,
   frosting: null,
   frostingColor: null,
   filling: null,
   fillingColor: null,
   decorations: [],
   fatType: 0, // Butter by default
-  fluffiness: 50, // Medium
-  sweetness: 50, // Medium
-  richness: 50, // Medium
+  fluffiness: 0, // Whole eggs by default
+  sweetness: 0, // Standard
+  richness: 0, // Standard
   moistureBoost: 'none',
   riseIntensity: 50, // Medium
 };
