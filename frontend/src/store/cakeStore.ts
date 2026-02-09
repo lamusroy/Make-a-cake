@@ -140,3 +140,25 @@ export const moistureBoostOptions = [
   { id: 'yogurt', name: 'Greek Yogurt', description: 'Light & moist' },
   { id: 'buttermilk', name: 'Buttermilk', description: 'Classic & fluffy' },
 ];
+
+// Brownie mix-ins
+export const mixInOptions = [
+  { id: 'walnuts', name: 'Walnuts', icon: 'leaf' },
+  { id: 'pecans', name: 'Pecans', icon: 'leaf-outline' },
+  { id: 'chocolate-chips', name: 'Choco Chips', icon: 'ellipse' },
+  { id: 'white-chocolate', name: 'White Choco', icon: 'ellipse-outline' },
+  { id: 'peanut-butter', name: 'PB Swirl', icon: 'infinite' },
+  { id: 'dried-cranberries', name: 'Cranberries', icon: 'nutrition' },
+  { id: 'dried-cherries', name: 'Cherries', icon: 'heart' },
+  { id: 'espresso', name: 'Espresso', icon: 'cafe' },
+];
+
+// Cheesecake crust options
+export const crustOptions = [
+  { id: 'graham-cracker', name: 'Graham Cracker', color: '#D7A86E', icon: 'square-outline' },
+  { id: 'oreo', name: 'Oreo', color: '#2D2D2D', icon: 'moon' },
+  { id: 'vanilla-wafer', name: 'Vanilla Wafer', color: '#F5E6D3', icon: 'ellipse-outline' },
+  { id: 'shortbread', name: 'Shortbread', color: '#EED9A5', icon: 'albums' },
+  { id: 'pretzel', name: 'Pretzel', color: '#C4A35A', icon: 'infinite' },
+  { id: 'no-bake', name: 'No Crust', color: '#FAFAFA', icon: 'close-circle-outline' },
+];
