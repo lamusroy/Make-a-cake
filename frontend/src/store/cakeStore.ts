@@ -58,8 +58,8 @@ export const useCakeStore = create<CakeStore>((set) => ({
   cake: initialCake,
   setFlavor: (flavor, color) =>
     set((state) => ({ cake: { ...state.cake, flavor, flavorColor: color } })),
-  setLayers: (layers) =>
-    set((state) => ({ cake: { ...state.cake, layers } })),
+  setCakeSize: (cakeSize, sizeMultiplier) =>
+    set((state) => ({ cake: { ...state.cake, cakeSize, sizeMultiplier } })),
   setFrosting: (frosting, color) =>
     set((state) => ({ cake: { ...state.cake, frosting, frostingColor: color } })),
   setFilling: (filling, color) =>
