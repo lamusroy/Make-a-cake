@@ -50,7 +50,21 @@ export default function Step2Size() {
   const setCakeSize = useCakeStore((state) => state.setCakeSize);
 
   const handleNext = () => {
-    router.push('/step3-frosting');
+    // Route based on dessert type
+    if (cake.dessertType === 'brownie') {
+      router.push('/step-brownie-mixins');
+    } else if (cake.dessertType === 'cheesecake') {
+      router.push('/step-cheesecake-crust');
+    } else {
+      router.push('/step3-frosting');
+    }
+  };
+
+  // Calculate total steps based on dessert type
+  const getTotalSteps = () => {
+    if (cake.dessertType === 'brownie') return 4; // Flavor, Size, Mix-ins, Fine-tune
+    if (cake.dessertType === 'cheesecake') return 5; // Flavor, Size, Crust, Toppings, Fine-tune
+    return 6; // Regular cake flow
   };
 
   const selectedSize = sizeOptions.find(s => s.id === cake.cakeSize) || sizeOptions[1];
