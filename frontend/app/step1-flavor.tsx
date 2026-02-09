@@ -18,7 +18,7 @@ export default function Step1Flavor() {
   };
 
   const handleNext = () => {
-    router.push('/step2-layers');
+    router.push('/step2-size');
   };
 
   return (
