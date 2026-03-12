@@ -79,7 +79,169 @@ const getSizeInfo = (cakeSize: string | null) => {
 };
 
 // Recipe generator based on selections
+const generateBrownieRecipe = (cake: any) => {
+  const sizeInfo = getSizeInfo(cake.cakeSize);
+
+  // Chocolate base varies by texture (fudgy=melted choc, cakey=cocoa powder, balanced=mix)
+  const getChocolateBase = () => {
+    if (cake.brownieTexture === 'fudgy') return '8 oz melted dark chocolate (70%+ cacao)';
+    if (cake.brownieTexture === 'cakey') return '¾ cup cocoa powder';
+    return '4 oz melted chocolate + ½ cup cocoa powder';
+  };
+
+  // Intensity adjusts the chocolate type
+  const getIntensityNote = () => {
+    if (cake.brownieIntensity === 'dark') return 'Use 70%+ dark chocolate for maximum intensity.';
+    if (cake.brownieIntensity === 'milk') return 'Use milk chocolate for a sweeter, smoother result.';
+    return 'Use white chocolate chips (add to batter) for a blonde brownie variation.';
+  };
+
+  // Flavor profile additions
+  const flavorAdditions: any = {
+    espresso: '1 tsp instant espresso powder (intensifies chocolate)',
+    vanilla: '1½ tsp pure vanilla extract',
+    cardamom: '½ tsp ground cardamom',
+    cinnamon: '1 tsp ground cinnamon',
+    chili: '¼ tsp cayenne pepper',
+    'sea-salt': '1 tsp flaky sea salt (for topping)',
+  };
+
+  const flavorIngredients = cake.brownieFlavorProfile
+    .map((id: string) => flavorAdditions[id])
+    .filter(Boolean)
+    .join(', ');
+
+  const fudgySteps = cake.brownieTexture === 'fudgy'
+    ? ['Melt chocolate with butter in a double boiler or microwave in 30-second intervals. Cool slightly.', 'Whisk eggs and sugar vigorously until pale and slightly thickened (about 2 minutes).', 'Pour chocolate mixture into egg mixture and fold gently.']
+    : cake.brownieTexture === 'cakey'
+    ? ['Cream butter and sugar until light and fluffy.', 'Add eggs one at a time, beating well after each.', 'Sift in cocoa powder and fold until combined.']
+    : ['Melt half the chocolate with butter. Cool slightly.', 'Whisk eggs and sugar until combined. Add melted chocolate.', 'Sift in cocoa powder and fold until just combined.'];
+
+  const mixInNames = cake.mixIns.map((id: string) => mixInOptions.find((m: any) => m.id === id)?.name).filter(Boolean);
+
+  return {
+    sizeInfo,
+    base: {
+      base: `${getChocolateBase()}, ½ cup (1 stick) unsalted butter, 1 cup granulated sugar, ½ cup brown sugar, 3 large eggs, 1 cup all-purpose flour, ½ tsp salt${flavorIngredients ? ', ' + flavorIngredients : ''}${mixInNames.length > 0 ? ', ' + mixInNames.join(', ') : ''}`,
+      instructions: [
+        `Preheat oven to ${cake.brownieTexture === 'fudgy' ? '325' : '350'}°F (${cake.brownieTexture === 'fudgy' ? '165' : '175'}°C). Line pan with parchment paper, leaving overhang on sides.`,
+        ...fudgySteps,
+        'Fold in flour and salt until just combined — do not overmix.',
+        cake.brownieFlavorProfile.length > 0 ? `Stir in flavor additions: ${flavorIngredients}.` : '',
+        mixInNames.length > 0 ? `Fold in mix-ins: ${mixInNames.join(', ')}.` : '',
+        'Pour batter into prepared pan and spread evenly.',
+        cake.brownieTexture === 'fudgy'
+          ? 'Bake 20–22 minutes. A toothpick should come out with moist crumbs (not wet batter). Do NOT overbake.'
+          : cake.brownieTexture === 'cakey'
+          ? 'Bake 28–32 minutes until a toothpick comes out clean.'
+          : 'Bake 24–26 minutes until toothpick has a few moist crumbs.',
+        cake.brownieIntensity === 'dark' ? 'Let cool in pan 30 minutes before cutting — fudgy brownies need time to set.' : 'Cool in pan 15 minutes, then lift out using parchment overhang.',
+        getIntensityNote(),
+      ].filter(Boolean),
+    },
+    intensityNote: getIntensityNote(),
+    flavorProfile: cake.brownieFlavorProfile.map((id: string) => flavorAdditions[id]).filter(Boolean),
+    mixIns: mixInNames,
+  };
+};
+
+const generateCheesecakeRecipe = (cake: any) => {
+  const sizeInfo = getSizeInfo(cake.cakeSize);
+  const style = cake.cheesecakeStyle || 'new-york';
+  const crust = cake.crust || 'Graham Cracker';
+  const topping = cake.cheesecakeTopping || 'Plain';
+
+  const styleRecipes: any = {
+    'new-york': {
+      name: 'New York Style',
+      base: '32 oz (4 packages) full-fat cream cheese (room temp), 1½ cups granulated sugar, 4 large eggs, 1 cup sour cream, 2 tbsp all-purpose flour, 2 tsp pure vanilla extract',
+      instructions: [
+        'Preheat oven to 325°F (165°C). Wrap outside of springform pan tightly with two layers of foil.',
+        `Make crust: Crush ${crust} finely. Mix 2 cups crumbs with ½ cup melted butter and 3 tbsp sugar. Press firmly into pan bottom and 1 inch up the sides. Bake 10 minutes. Cool.`,
+        'Beat cream cheese on medium until completely smooth, scraping bowl often (5 minutes).',
+        'Add sugar and flour, beat 2 minutes. Add eggs one at a time on LOW speed — do not overbeat.',
+        'Fold in sour cream and vanilla by hand.',
+        'Pour over crust. Place springform in a larger pan and add 1 inch of boiling water (water bath).',
+        'Bake 65–75 minutes until edges are set but center jiggles like jello.',
+        'Turn off oven. Crack door open 1 inch. Leave cheesecake inside for 1 hour.',
+        'Remove from water bath. Run a thin knife around the edge. Cool to room temperature.',
+        'Refrigerate uncovered at least 6 hours, ideally overnight. Add topping before serving.',
+      ],
+    },
+    'japanese': {
+      name: 'Japanese Cotton Cheesecake',
+      base: '8 oz cream cheese (room temp), 6 tbsp unsalted butter, ½ cup whole milk, 6 eggs (separated), ¼ cup all-purpose flour, ¼ cup cornstarch, 1 tsp vanilla, ¾ cup fine sugar (divided)',
+      instructions: [
+        'Preheat oven to 300°F (150°C). Line springform pan with parchment. Place a pan of water on the bottom oven rack.',
+        `Make crust: Mix 1 cup crushed ${crust} with 3 tbsp melted butter. Press into pan base. Bake 8 minutes.`,
+        'Melt cream cheese, butter, and milk together over low heat, stirring until smooth. Cool to lukewarm.',
+        'Whisk in egg yolks, flour, cornstarch, and vanilla into the cream cheese mixture.',
+        'In a separate bowl, whip egg whites until foamy. Gradually add ½ cup sugar, beating to stiff, glossy peaks.',
+        'Gently fold egg white mixture into cream cheese mixture in THREE additions — light hand, preserve volume.',
+        'Pour into pan. Gently tap to remove bubbles.',
+        'Bake 60–70 minutes until golden and springy to touch. Top should NOT crack.',
+        'Cool in oven with door open 30 minutes, then cool on rack 1 hour.',
+        'Refrigerate 4+ hours. Dust with powdered sugar before serving.',
+      ],
+    },
+    'basque': {
+      name: 'Basque Burnt Cheesecake',
+      base: '2 lbs (4 packages) full-fat cream cheese (room temp), 1½ cups sugar, 5 large eggs, 2 cups heavy cream, 1 tsp vanilla, 2 tbsp all-purpose flour, ½ tsp salt',
+      instructions: [
+        'Preheat oven to 425°F (220°C). Line a springform pan with TWO sheets of parchment paper — let it come 2 inches above the rim. Do NOT make a crust.',
+        'Beat cream cheese and sugar until completely smooth and fluffy (4–5 minutes).',
+        'Add eggs one at a time, beating well. Scrape bowl thoroughly.',
+        'Pour in heavy cream slowly while mixing. Add vanilla and salt.',
+        'Sift in flour and mix until just incorporated.',
+        'Pour into lined pan. The batter should be very smooth and flowing.',
+        'Bake 50–60 minutes until top is DEEPLY dark brown (almost burnt) but center still jiggles significantly.',
+        'Let cool to room temperature (at least 2 hours) — it will deflate, that\'s normal.',
+        'Refrigerate 3+ hours. The custardy center will set. Peel back parchment to serve.',
+        '⚠️ No crust, no topping needed — this cheesecake is perfect as-is. But a drizzle of honey works beautifully.',
+      ],
+    },
+    'no-bake': {
+      name: 'No-Bake Cheesecake',
+      base: '16 oz full-fat cream cheese (room temp), 1 cup powdered sugar, 2 tsp vanilla, 2 cups heavy whipping cream, 2 tbsp lemon juice',
+      instructions: [
+        `Make crust: Mix 2 cups crushed ${crust} with ½ cup melted butter and 3 tbsp sugar. Press firmly into pan. Refrigerate 30 minutes.`,
+        'Beat cream cheese until completely smooth (3 minutes). Add powdered sugar, vanilla, and lemon juice.',
+        'In a separate bowl, whip heavy cream to stiff peaks.',
+        'Gently fold whipped cream into cream cheese mixture in two additions — keep it fluffy.',
+        'Pour over chilled crust and smooth the top.',
+        'Cover with plastic wrap (don\'t let it touch the surface) and refrigerate at least 6 hours or overnight.',
+        'Run a thin knife around the edge before releasing springform.',
+        `Add ${topping === 'Plain' ? 'desired toppings' : topping} just before serving for best presentation.`,
+      ],
+    },
+  };
+
+  const toppingInstructions: any = {
+    'Plain': 'Serve as-is, or dust lightly with powdered sugar.',
+    'Strawberry Compote': 'Cook 2 cups fresh strawberries, ¼ cup sugar, and 1 tbsp lemon juice over medium heat 10 minutes until thickened. Cool completely before spreading on cheesecake.',
+    'Blueberry Compote': 'Simmer 2 cups blueberries, ¼ cup sugar, and 1 tbsp lemon zest for 8 minutes. Cool before topping.',
+    'Mango Coulis': 'Blend 2 ripe mangoes with 2 tbsp sugar and 1 tbsp lime juice until smooth. Strain for a silky coulis.',
+    'Caramel': 'Make caramel sauce: cook 1 cup sugar until amber, carefully add ½ cup warm cream, stir until smooth. Cool before drizzling.',
+    'Dulce de Leche': 'Spread a generous layer of store-bought or homemade dulce de leche. Warm it slightly for easier spreading.',
+    'Chocolate Ganache': 'Heat ½ cup heavy cream until steaming, pour over 4 oz chopped dark chocolate. Stir until smooth. Cool 10 minutes, then pour over cheesecake.',
+    'Whipped Cream': 'Whip 1 cup cold heavy cream with 2 tbsp sugar to stiff peaks. Pipe or spread over the top just before serving.',
+    'Biscoff Spread': 'Warm ½ cup Biscoff spread until pourable. Drizzle or spread over chilled cheesecake. Top with crushed Biscoff cookies.',
+  };
+
+  return {
+    sizeInfo,
+    styleName: styleRecipes[style]?.name || 'Classic',
+    base: styleRecipes[style] || styleRecipes['new-york'],
+    crust,
+    topping,
+    toppingInstructions: toppingInstructions[topping] || '',
+  };
+};
+
 const generateRecipe = (cake: any) => {
+  if (cake.dessertType === 'brownie') return { ...generateBrownieRecipe(cake), dessertType: 'brownie' };
+  if (cake.dessertType === 'cheesecake') return { ...generateCheesecakeRecipe(cake), dessertType: 'cheesecake' };
+
   const fatInfo = getFatTypeText(cake.fatType);
   const fluffInfo = getFluffinessText(cake.fluffiness);
   const sizeInfo = getSizeInfo(cake.cakeSize);
@@ -262,14 +424,12 @@ const generateRecipe = (cake: any) => {
     frosting: cake.dessertType === 'cake' ? frostings[cake.frosting || 'Buttercream'] : null,
     filling: cake.dessertType === 'cake' ? fillings[cake.filling || 'None (Plain)'] : null,
     sizeInfo: sizeInfo,
-    dessertType: cake.dessertType,
+    dessertType: 'cake',
     decorations: cake.decorations.map((id: string) => decorationOptions.find(d => d.id === id)?.name).filter(Boolean),
     toppingInstructions: cake.decorations.map((id: string) => toppings[id]).filter(Boolean),
-    // Brownie specific
-    mixIns: cake.mixIns.map((id: string) => mixInOptions.find(m => m.id === id)?.name).filter(Boolean),
-    mixInInstructions: mixInInstructionsList,
-    // Cheesecake specific
-    crust: cake.crust,
+    mixIns: [],
+    mixInInstructions: [],
+    crust: null,
     fineTuning: {
       fatType: fatInfo.name,
       fluffiness: cake.fluffiness > 50 ? 'Extra Fluffy (whipped whites)' : 'Dense (whole eggs)',
@@ -390,6 +550,9 @@ export default function RecipeResult() {
 
   if (!recipe) return null;
 
+  const isBrownie = cake.dessertType === 'brownie';
+  const isCheesecake = cake.dessertType === 'cheesecake';
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <StatusBar barStyle="dark-content" />
@@ -410,19 +573,19 @@ export default function RecipeResult() {
       >
         {/* Celebration */}
         <Animated.View style={[styles.celebrationContainer, celebrationStyle]}>
-          <Text style={styles.celebrationEmoji}>{cake.dessertType === 'brownie' ? '🍫' : cake.dessertType === 'cheesecake' ? '🧀' : '🎉'}</Text>
+          <Text style={styles.celebrationEmoji}>{isBrownie ? '🍫' : isCheesecake ? '🍰' : '🎉'}</Text>
           <Text style={styles.celebrationTitle}>
-            {cake.dessertType === 'brownie' ? 'Your Brownies are Ready!' : 
-             cake.dessertType === 'cheesecake' ? 'Your Cheesecake is Ready!' : 
-             'Your Cake is Ready!'}
+            {isBrownie ? 'Your Brownies are Ready!' : isCheesecake ? 'Your Cheesecake is Ready!' : 'Your Cake is Ready!'}
           </Text>
           <Text style={styles.celebrationSubtitle}>
-            {recipe.sizeInfo.name} {cake.flavor} ({recipe.sizeInfo.servings} servings)
+            {isCheesecake
+              ? `${recipe.styleName} • ${recipe.sizeInfo.name} (${recipe.sizeInfo.servings} servings)`
+              : `${recipe.sizeInfo.name} ${cake.flavor} (${recipe.sizeInfo.servings} servings)`}
           </Text>
         </Animated.View>
         
         {/* Cake Preview - only for regular cakes */}
-        {cake.dessertType === 'cake' && (
+        {!isBrownie && !isCheesecake && (
           <Animated.View 
             entering={FadeInDown.delay(200).duration(500)}
             style={styles.previewSection}
@@ -430,8 +593,57 @@ export default function RecipeResult() {
             <CakePreview size="large" />
           </Animated.View>
         )}
+
+        {/* Brownie constitution summary */}
+        {isBrownie && (
+          <Animated.View entering={FadeInDown.delay(200).duration(500)}>
+            <View style={[styles.recipeCard, styles.brownieCard]}>
+              <View style={styles.cardHeader}>
+                <Ionicons name="options" size={24} color="#5D4037" />
+                <Text style={[styles.cardTitle, { color: '#5D4037' }]}>Your Brownie Profile</Text>
+              </View>
+              <View style={styles.decorationsList}>
+                {cake.brownieTexture && (
+                  <View style={[styles.decorationBadge, styles.mixInBadge]}>
+                    <Text style={[styles.decorationText, { color: '#5D4037' }]}>
+                      {cake.brownieTexture.charAt(0).toUpperCase() + cake.brownieTexture.slice(1)}
+                    </Text>
+                  </View>
+                )}
+                {cake.brownieIntensity && (
+                  <View style={[styles.decorationBadge, styles.mixInBadge]}>
+                    <Text style={[styles.decorationText, { color: '#5D4037' }]}>
+                      {cake.brownieIntensity.charAt(0).toUpperCase() + cake.brownieIntensity.slice(1)} Chocolate
+                    </Text>
+                  </View>
+                )}
+                {cake.brownieFlavorProfile?.map((p: string) => (
+                  <View key={p} style={[styles.decorationBadge, styles.mixInBadge]}>
+                    <Text style={[styles.decorationText, { color: '#5D4037' }]}>{p.charAt(0).toUpperCase() + p.slice(1)}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          </Animated.View>
+        )}
+
+        {/* Cheesecake style summary */}
+        {isCheesecake && (
+          <Animated.View entering={FadeInDown.delay(200).duration(500)}>
+            <View style={[styles.recipeCard, styles.cheesecakeCard]}>
+              <View style={styles.cardHeader}>
+                <Ionicons name="ribbon" size={24} color="#C4704F" />
+                <Text style={[styles.cardTitle, { color: '#C4704F' }]}>{recipe.styleName}</Text>
+              </View>
+              <View style={styles.decorationsList}>
+                <View style={styles.decorationBadge}><Text style={styles.decorationText}>{recipe.crust} Crust</Text></View>
+                <View style={styles.decorationBadge}><Text style={styles.decorationText}>{recipe.topping}</Text></View>
+              </View>
+            </View>
+          </Animated.View>
+        )}
         
-        {/* Recipe Cards */}
+        {/* Ingredients */}
         <Animated.View entering={FadeInDown.delay(400).duration(500)}>
           <View style={styles.recipeCard}>
             <View style={styles.cardHeader}>
@@ -442,6 +654,7 @@ export default function RecipeResult() {
           </View>
         </Animated.View>
         
+        {/* Instructions */}
         <Animated.View entering={FadeInDown.delay(500).duration(500)}>
           <View style={styles.recipeCard}>
             <View style={styles.cardHeader}>
@@ -459,33 +672,35 @@ export default function RecipeResult() {
           </View>
         </Animated.View>
         
+        {/* Cake: Frosting */}
         {recipe.frosting && (
           <Animated.View entering={FadeInDown.delay(600).duration(500)}>
             <View style={styles.recipeCard}>
               <View style={styles.cardHeader}>
                 <Ionicons name="color-palette" size={24} color="#E85A4F" />
-                <Text style={styles.cardTitle}>Frosting - {cake.frosting}</Text>
+                <Text style={styles.cardTitle}>Frosting — {cake.frosting}</Text>
               </View>
               <Text style={styles.cardContent}>{recipe.frosting}</Text>
             </View>
           </Animated.View>
         )}
         
+        {/* Cake: Filling */}
         {recipe.filling && (
           <Animated.View entering={FadeInDown.delay(700).duration(500)}>
             <View style={styles.recipeCard}>
               <View style={styles.cardHeader}>
                 <Ionicons name="layers" size={24} color="#E85A4F" />
-                <Text style={styles.cardTitle}>Filling - {cake.filling}</Text>
+                <Text style={styles.cardTitle}>Filling — {cake.filling}</Text>
               </View>
               <Text style={styles.cardContent}>{recipe.filling}</Text>
             </View>
           </Animated.View>
         )}
-        
-        {/* Brownie Mix-ins */}
-        {recipe.mixIns && recipe.mixIns.length > 0 && (
-          <Animated.View entering={FadeInDown.delay(700).duration(500)}>
+
+        {/* Brownie: Mix-ins */}
+        {isBrownie && recipe.mixIns && recipe.mixIns.length > 0 && (
+          <Animated.View entering={FadeInDown.delay(600).duration(500)}>
             <View style={[styles.recipeCard, styles.brownieCard]}>
               <View style={styles.cardHeader}>
                 <Ionicons name="grid" size={24} color="#5D4037" />
@@ -498,36 +713,25 @@ export default function RecipeResult() {
                   </View>
                 ))}
               </View>
-              {recipe.mixInInstructions && recipe.mixInInstructions.length > 0 && (
-                <View style={styles.toppingInstructions}>
-                  {recipe.mixInInstructions.map((instruction: string, index: number) => (
-                    <View key={index} style={styles.toppingInstructionRow}>
-                      <Ionicons name="checkmark-circle" size={16} color="#5D4037" />
-                      <Text style={styles.toppingInstructionText}>{instruction}</Text>
-                    </View>
-                  ))}
-                </View>
-              )}
             </View>
           </Animated.View>
         )}
-        
-        {/* Cheesecake Crust */}
-        {recipe.crust && (
-          <Animated.View entering={FadeInDown.delay(650).duration(500)}>
+
+        {/* Cheesecake: Topping instructions */}
+        {isCheesecake && recipe.toppingInstructions && (
+          <Animated.View entering={FadeInDown.delay(600).duration(500)}>
             <View style={[styles.recipeCard, styles.cheesecakeCard]}>
               <View style={styles.cardHeader}>
-                <Ionicons name="albums" size={24} color="#FF8F00" />
-                <Text style={[styles.cardTitle, { color: '#FF8F00' }]}>Crust - {recipe.crust}</Text>
+                <Ionicons name="sparkles" size={24} color="#C4704F" />
+                <Text style={[styles.cardTitle, { color: '#C4704F' }]}>Topping — {recipe.topping}</Text>
               </View>
-              <Text style={styles.cardContent}>
-                Crush cookies/crackers finely, mix with melted butter and sugar, press firmly into pan bottom.
-              </Text>
+              <Text style={styles.cardContent}>{recipe.toppingInstructions}</Text>
             </View>
           </Animated.View>
         )}
         
-        {recipe.decorations.length > 0 && (
+        {/* Cake: Decorations */}
+        {!isBrownie && !isCheesecake && recipe.decorations && recipe.decorations.length > 0 && (
           <Animated.View entering={FadeInDown.delay(800).duration(500)}>
             <View style={styles.recipeCard}>
               <View style={styles.cardHeader}>
@@ -555,8 +759,8 @@ export default function RecipeResult() {
           </Animated.View>
         )}
         
-        {/* Fine-Tuning Adjustments */}
-        {recipe.fineTuning && recipe.fineTuning.tips.length > 0 && (
+        {/* Cake: Fine-Tuning Adjustments */}
+        {!isBrownie && !isCheesecake && recipe.fineTuning && recipe.fineTuning.tips.length > 0 && (
           <Animated.View entering={FadeInDown.delay(850).duration(500)}>
             <View style={[styles.recipeCard, styles.fineTuningCard]}>
               <View style={styles.cardHeader}>
@@ -585,7 +789,7 @@ export default function RecipeResult() {
           </Animated.View>
         )}
         
-        {/* Tips */}
+        {/* Pro Tips */}
         <Animated.View entering={FadeInDown.delay(900).duration(500)}>
           <View style={[styles.recipeCard, styles.tipsCard]}>
             <View style={styles.cardHeader}>
@@ -593,10 +797,11 @@ export default function RecipeResult() {
               <Text style={[styles.cardTitle, { color: '#6B5B4F' }]}>Pro Tips</Text>
             </View>
             <Text style={styles.tipsText}>
-              • Room temperature ingredients mix better{"\n"}
-              • Don't overmix the batter{"\n"}
-              • Let cakes cool completely before frosting{"\n"}
-              • Use a serrated knife to level cake layers
+              {isBrownie
+                ? '• Use room temperature eggs for smoother batter\n• Line the pan with parchment for easy removal\n• Let brownies cool completely — they firm up as they cool\n• Cut with a plastic knife for cleaner squares'
+                : isCheesecake
+                ? '• All dairy must be at room temperature before mixing\n• Never overbeat after adding eggs — it incorporates air\n• A water bath prevents cracks\n• Patience is key: chill at least 6 hours before serving'
+                : '• Room temperature ingredients mix better\n• Don\'t overmix the batter\n• Let cakes cool completely before frosting\n• Use a serrated knife to level cake layers'}
             </Text>
           </View>
         </Animated.View>

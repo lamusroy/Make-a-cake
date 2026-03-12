@@ -18,7 +18,14 @@ export default function Step1Flavor() {
   };
 
   const handleNext = () => {
-    router.push('/step2-size');
+    const selected = flavorOptions.find(o => o.name === cake.flavor);
+    if (selected?.type === 'brownie') {
+      router.push('/brownie/b1-size');
+    } else if (selected?.type === 'cheesecake') {
+      router.push('/cheesecake/c1-style');
+    } else {
+      router.push('/step2-size');
+    }
   };
 
   // Group options by type

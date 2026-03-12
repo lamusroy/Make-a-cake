@@ -3,9 +3,9 @@ import { create } from 'zustand';
 export interface CakeConfig {
   flavor: string | null;
   flavorColor: string | null;
-  dessertType: 'cake' | 'brownie' | 'cheesecake'; // Type determines flow
-  cakeSize: string | null; // 'small' | 'medium' | 'large' | 'party'
-  sizeMultiplier: number; // Recipe multiplier based on size
+  dessertType: 'cake' | 'brownie' | 'cheesecake';
+  cakeSize: string | null;
+  sizeMultiplier: number;
   frosting: string | null;
   frostingColor: string | null;
   filling: string | null;
@@ -13,16 +13,22 @@ export interface CakeConfig {
   decorations: string[];
   // Brownie-specific
   mixIns: string[];
+  brownieTexture: 'fudgy' | 'balanced' | 'cakey' | null;
+  brownieIntensity: 'dark' | 'milk' | 'white' | null;
+  brownieFlavorProfile: string[]; // espresso, vanilla, cardamom
   // Cheesecake-specific
+  cheesecakeStyle: 'new-york' | 'japanese' | 'basque' | 'no-bake' | null;
   crust: string | null;
   crustColor: string | null;
-  // Fine-tuning options
-  fatType: number; // 0 = Butter, 100 = Oil
-  fluffiness: number; // 0 = Whole eggs (dense), 100 = Whipped whites (fluffy)
-  sweetness: number; // 0 = Less sweet, 100 = Extra sweet
-  richness: number; // 0 = Standard, 100 = Extra yolks
-  moistureBoost: string; // 'none' | 'sour-cream' | 'yogurt' | 'buttermilk'
-  riseIntensity: number; // 0 = Low rise, 100 = High rise
+  cheesecakeTopping: string | null;
+  cheesecakeToppingColor: string | null;
+  // Cake fine-tuning options
+  fatType: number;
+  fluffiness: number;
+  sweetness: number;
+  richness: number;
+  moistureBoost: string;
+  riseIntensity: number;
 }
 
 interface CakeStore {
@@ -35,7 +41,12 @@ interface CakeStore {
   toggleDecoration: (decoration: string) => void;
   setMixIns: (mixIns: string[]) => void;
   toggleMixIn: (mixIn: string) => void;
+  setBrownieTexture: (texture: 'fudgy' | 'balanced' | 'cakey') => void;
+  setBrownieIntensity: (intensity: 'dark' | 'milk' | 'white') => void;
+  toggleBrownieFlavorProfile: (profile: string) => void;
+  setCheesecakeStyle: (style: 'new-york' | 'japanese' | 'basque' | 'no-bake') => void;
   setCrust: (crust: string, color: string) => void;
+  setCheesecakeTopping: (topping: string, color: string) => void;
   setFatType: (value: number) => void;
   setFluffiness: (value: number) => void;
   setSweetness: (value: number) => void;
@@ -57,14 +68,20 @@ const initialCake: CakeConfig = {
   fillingColor: null,
   decorations: [],
   mixIns: [],
+  brownieTexture: null,
+  brownieIntensity: null,
+  brownieFlavorProfile: [],
+  cheesecakeStyle: null,
   crust: null,
   crustColor: null,
-  fatType: 0, // Butter by default
-  fluffiness: 0, // Whole eggs by default
-  sweetness: 0, // Standard
-  richness: 0, // Standard
+  cheesecakeTopping: null,
+  cheesecakeToppingColor: null,
+  fatType: 0,
+  fluffiness: 0,
+  sweetness: 0,
+  richness: 0,
   moistureBoost: 'none',
-  riseIntensity: 50, // Medium
+  riseIntensity: 50,
 };
 
 export const useCakeStore = create<CakeStore>((set) => ({
@@ -97,8 +114,24 @@ export const useCakeStore = create<CakeStore>((set) => ({
         : [...current, mixIn];
       return { cake: { ...state.cake, mixIns: newMixIns } };
     }),
+  setBrownieTexture: (brownieTexture) =>
+    set((state) => ({ cake: { ...state.cake, brownieTexture } })),
+  setBrownieIntensity: (brownieIntensity) =>
+    set((state) => ({ cake: { ...state.cake, brownieIntensity } })),
+  toggleBrownieFlavorProfile: (profile) =>
+    set((state) => {
+      const current = state.cake.brownieFlavorProfile;
+      const updated = current.includes(profile)
+        ? current.filter((p) => p !== profile)
+        : [...current, profile];
+      return { cake: { ...state.cake, brownieFlavorProfile: updated } };
+    }),
+  setCheesecakeStyle: (cheesecakeStyle) =>
+    set((state) => ({ cake: { ...state.cake, cheesecakeStyle } })),
   setCrust: (crust, color) =>
     set((state) => ({ cake: { ...state.cake, crust, crustColor: color } })),
+  setCheesecakeTopping: (cheesecakeTopping, color) =>
+    set((state) => ({ cake: { ...state.cake, cheesecakeTopping, cheesecakeToppingColor: color } })),
   setFatType: (fatType) =>
     set((state) => ({ cake: { ...state.cake, fatType } })),
   setFluffiness: (fluffiness) =>
@@ -185,5 +218,20 @@ export const crustOptions = [
   { id: 'vanilla-wafer', name: 'Vanilla Wafer', color: '#F5E6D3', icon: 'ellipse-outline' },
   { id: 'shortbread', name: 'Shortbread', color: '#EED9A5', icon: 'albums' },
   { id: 'pretzel', name: 'Pretzel', color: '#C4A35A', icon: 'infinite' },
-  { id: 'no-bake', name: 'No Crust', color: '#FAFAFA', icon: 'close-circle-outline' },
+  { id: 'lotus', name: 'Lotus (Biscoff)', color: '#C8762B', icon: 'flower' },
+  { id: 'maria', name: 'María Cookies', color: '#F0D9A0', icon: 'ellipse' },
+  { id: 'no-crust', name: 'No Crust', color: '#FAFAFA', icon: 'close-circle-outline' },
+];
+
+// Cheesecake topping options
+export const cheesecakeToppingOptions = [
+  { id: 'none', name: 'Plain', color: '#F5F5F5', icon: 'close-circle-outline' },
+  { id: 'strawberry', name: 'Strawberry Compote', color: '#E91E63', icon: 'heart' },
+  { id: 'blueberry', name: 'Blueberry Compote', color: '#3949AB', icon: 'ellipse' },
+  { id: 'mango', name: 'Mango Coulis', color: '#FF8F00', icon: 'sunny' },
+  { id: 'caramel', name: 'Caramel', color: '#D4A055', icon: 'flame' },
+  { id: 'dulce-de-leche', name: 'Dulce de Leche', color: '#C47A35', icon: 'water' },
+  { id: 'chocolate-ganache', name: 'Chocolate Ganache', color: '#3E2723', icon: 'moon' },
+  { id: 'whipped-cream', name: 'Whipped Cream', color: '#FFFFFF', icon: 'cloud' },
+  { id: 'biscoff', name: 'Biscoff Spread', color: '#C8762B', icon: 'flower' },
 ];
